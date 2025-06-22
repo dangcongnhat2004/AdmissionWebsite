@@ -1,385 +1,493 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{user/layout}">
 
-<head>
-    <meta charset="utf-8">
-    <title>Edukate - Online Education Website Template</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="Free HTML Templates" name="keywords">
-    <meta content="Free HTML Templates" name="description">
+<main layout:fragment="content">
 
-    <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Khóa học Kubernetes thực tế</title>
+        <style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+                margin: 0;
+                background-color: #fff;
+                color: #333;
+                font-size: 16px;
+            }
+            .container {
+                display: flex;
+                gap: 30px; /* Space between columns */
+                max-width: 1140px; /* Max width of the content area */
+                margin: 30px auto; /* Centering the container */
+                padding: 0 15px; /* Padding on the sides */
+            }
+            .left-column {
+                flex: 7; /* Left column takes more space */
+            }
+            .right-column {
+                flex: 3; /* Right column takes less space */
+            }
 
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet"> 
+            /* --- Left Column Styles --- */
+            .rating {
+                margin-bottom: 8px;
+                display: flex;
+                align-items: center;
+                font-size: 0.9em;
+                color: #555;
+            }
+            .rating .stars {
+                color: #f5a623; /* Gold color for stars */
+                margin-right: 8px;
+                font-size: 1.1em;
+            }
+            .course-main-title {
+                font-size: 28px;
+                font-weight: 700;
+                margin-bottom: 8px;
+                color: #1c1d1f; /* Darker text for title */
+            }
+            .category {
+                font-size: 0.9em;
+                color: #555;
+                margin-bottom: 20px;
+            }
 
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+            .video-placeholder {
+                background-color: #29303B; /* Dark blue/grey similar to image */
+                color: white;
+                height: 450px; /* Approximate height from image */
+                border-radius: 8px;
+                position: relative;
+                overflow: hidden;
+                display: flex; /* Use flex to center content-area */
+                flex-direction: column; /* Stack top-bar and content-area */
+                /* Subtle background pattern similar to a helm wheel */
+                background-image: radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px),
+                radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px);
+                background-size: 30px 30px, 30px 30px;
+                background-position: 0 0, 15px 15px;
+            }
+            .video-top-bar {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 15px 20px;
+                background-color: rgba(0,0,0,0.15); /* Slightly transparent black bar */
+                font-size: 0.85em;
+                z-index: 10;
+            }
+            .video-top-bar .title-section {
+                display: flex;
+                align-items: center;
+                color: #e0e0e0; /* Lighter text for readability */
+            }
+            .video-top-bar .logo {
+                width: 24px;
+                height: 24px;
+                background-color: #FF4500; /* Orange-Red like YouTube logo */
+                border-radius: 50%;
+                margin-right: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .video-top-bar .logo-inner { /* Simple representation for inner part of logo */
+                width: 8px;
+                height: 8px;
+                border: 2px solid white;
+                border-radius: 50%;
+            }
+            .video-top-bar .actions a {
+                color: #e0e0e0;
+                text-decoration: none;
+                margin-left: 20px;
+            }
+            .video-top-bar .actions a:hover {
+                text-decoration: underline;
+            }
+            .video-top-bar .actions i { margin-right: 4px; }
 
-    <!-- Libraries Stylesheet -->
-    <link href="/course/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+            .video-content-area {
+                margin: auto; /* Centers the content block vertically and horizontally */
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                position: relative; /* For play button positioning if needed */
+                padding: 20px; /* Padding around the text and button */
+            }
+            .video-placeholder .main-video-title {
+                font-size: 48px;
+                font-weight: 700;
+                margin-bottom: 5px;
+                line-height: 1.2;
+            }
+            .video-placeholder .sub-video-title {
+                font-size: 24px;
+                font-weight: 400;
+                margin-bottom: 30px;
+            }
+            .play-button {
+                width: 80px;
+                height: 80px;
+                background-color: #FF0000; /* Bright Red for play button */
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                box-shadow: 0 4px 15px rgba(255,0,0,0.4); /* Shadow for play button */
+            }
+            .play-button::before { /* Triangle play icon */
+                content: '';
+                display: block;
+                width: 0;
+                height: 0;
+                border-top: 18px solid transparent;
+                border-bottom: 18px solid transparent;
+                border-left: 30px solid white;
+                margin-left: 5px; /* Adjust to center triangle */
+            }
 
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="/course/css/style.css" rel="stylesheet">
-</head>
+            .tabs {
+                display: flex;
+                border-bottom: 1px solid #e0e0e0;
+                margin-top: 30px;
+                margin-bottom: 25px;
+            }
+            .tabs div {
+                padding: 12px 0px; /* Padding top/bottom, no horizontal for margin-right */
+                margin-right: 25px;
+                cursor: pointer;
+                font-size: 1em;
+                color: #555;
+                position: relative; /* For the active underline */
+            }
+            .tabs .active {
+                color: #e74c3c; /* Red color for active tab */
+                font-weight: 600;
+            }
+            .tabs .active::after { /* Underline for active tab */
+                content: '';
+                position: absolute;
+                bottom: -1px; /* Align with parent's border-bottom */
+                left: 0;
+                width: 100%;
+                height: 2px;
+                background-color: #e74c3c;
+            }
 
-<body>
-    <!-- Topbar Start -->
-    <div class="container-fluid bg-dark">
-        <div class="row py-2 px-lg-5">
-            <div class="col-lg-6 text-center text-lg-left mb-2 mb-lg-0">
-                <div class="d-inline-flex align-items-center text-white">
-                    <small><i class="fa fa-phone-alt mr-2"></i>+012 345 6789</small>
-                    <small class="px-3">|</small>
-                    <small><i class="fa fa-envelope mr-2"></i>info@example.com</small>
+            .course-description .section-title {
+                font-size: 22px;
+                font-weight: 600;
+                margin-bottom: 15px;
+                color: #1c1d1f;
+            }
+            .description-content p {
+                line-height: 1.7;
+                color: #333;
+                margin-bottom: 1em;
+            }
+
+            /* --- Right Column Styles --- */
+            .right-column-sticky-content {
+                position: sticky;
+                top: 20px; /* Stick to top with some offset */
+            }
+            .save-share-actions {
+                display: flex;
+                justify-content: flex-end; /* Align to the right */
+                gap: 20px;
+                margin-bottom: 20px;
+                font-size: 0.9em;
+            }
+            .save-share-actions a {
+                text-decoration: none;
+                color: #555;
+                display: flex;
+                align-items: center;
+            }
+            .save-share-actions a:hover { color: #e74c3c; }
+            .save-share-actions i {
+                margin-right: 6px;
+                font-size: 1.1em;
+            }
+
+            .price-box {
+                background-color: #f7f8fa; /* Light grey background for this box */
+                padding: 25px;
+                border-radius: 8px;
+                /* box-shadow: 0 2px 8px rgba(0,0,0,0.08); */ /* Subtle shadow */
+                border: 1px solid #e8e9eb; /* Light border as in image */
+            }
+            .price-box .price-header {
+                font-size: 24px;
+                font-weight: 700;
+                margin-bottom: 15px;
+                color: #1c1d1f;
+                text-align: center;
+            }
+            .btn-register {
+                background-color: #e74c3c; /* Red button */
+                color: white;
+                border: none;
+                padding: 14px;
+                width: 100%;
+                font-size: 1em;
+                font-weight: 600;
+                border-radius: 5px;
+                cursor: pointer;
+                margin-bottom: 10px;
+                text-align: center;
+                display: block; /* Make it a block for full width */
+                text-decoration: none;
+            }
+            .btn-register:hover { background-color: #c0392b; /* Darker red on hover */ }
+            .free-enroll-text {
+                text-align: center;
+                color: #555;
+                font-size: 0.85em;
+                margin-bottom: 25px;
+            }
+
+            .course-info-list {
+                list-style: none;
+                padding: 0;
+                margin: 0 0 25px 0;
+            }
+            .course-info-list li {
+                margin-bottom: 12px;
+                display: flex;
+                align-items: center;
+                color: #333;
+                font-size: 0.95em;
+            }
+            .course-info-list li i {
+                margin-right: 12px;
+                color: #555;
+                width: 20px;
+                text-align: center;
+                font-size: 1.2em; /* Icon size */
+            }
+
+            .instructor-section, .resources-section {
+                margin-top: 25px;
+                padding-top: 25px;
+                border-top: 1px solid #e8e9eb; /* Separator line */
+            }
+            .section-sub-title { /* For "Khóa học bởi", "Các tài liệu khóa học" */
+                font-size: 1.1em;
+                font-weight: 600;
+                margin-bottom: 15px;
+                color: #1c1d1f;
+            }
+
+            .instructor-info {
+                display: flex;
+                align-items: center;
+            }
+            .instructor-avatar {
+                width: 48px;
+                height: 48px;
+                background-color: #f0f0f0; /* Light grey background for avatar */
+                border-radius: 50%;
+                margin-right: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: bold;
+                overflow: hidden; /* To ensure content fits circle */
+            }
+            .instructor-avatar-content { /* Container for E and bars */
+                display: flex;
+                align-items: center;
+            }
+            .avatar-e-char {
+                background-color: #e74c3c; /* Red box for 'E' */
+                color: white;
+                padding: 4px 7px;
+                border-radius: 3px;
+                margin-right: 1.5px; /* Small space to bars */
+                font-size: 0.9em; /* Adjust font size of E */
+                line-height: 1;
+            }
+            .avatar-bar-container { /* For the three vertical bars */
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                height: 18px; /* Match approximate height of 'E' box */
+            }
+            .avatar-bar {
+                width: 1.5px; /* Thinner bars */
+                height: 4.5px; /* Height of each individual bar */
+                background-color: #aaaaaa; /* Grey color for bars */
+            }
+            .avatar-bar:not(:last-child) {
+                margin-bottom: 1.5px; /* Space between bars */
+            }
+
+            .instructor-details p {
+                margin: 0;
+                line-height: 1.4;
+            }
+            .instructor-details .name {
+                font-weight: 600;
+                color: #1c1d1f;
+            }
+            .instructor-details .title {
+                font-size: 0.85em;
+                color: #555;
+            }
+
+            .resources-list {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+            .resources-list li {
+                margin-bottom: 8px;
+                font-size: 0.95em;
+                color: #333;
+                line-height: 1.5;
+            }
+            .resources-list li a {
+                color: #007bff; /* Standard link blue */
+                text-decoration: none;
+                word-break: break-all; /* Prevent long URLs from breaking layout */
+            }
+            .resources-list li a:hover { text-decoration: underline; }
+
+            /* Placeholder Icons (replace with FontAwesome or SVGs for better visuals) */
+            .icon-bookmark::before { content: "🔖"; }
+            .icon-share::before { content: "🔗"; }
+            .icon-level::before { content: "📶"; }
+            .icon-students::before { content: "🎓"; }
+            .icon-update::before { content: "🔄"; }
+            .icon-certificate::before { content: "📜"; }
+            .icon-time::before { content: "🕒"; }
+            .icon-share-video::before { content: "↪️"; }
+
+        </style>
+        <!--
+          To use Font Awesome (recommended for icons):
+          1. Add this to your <head>:
+             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+          2. Replace text icons (like <i class="icon-bookmark"></i>) with Font Awesome classes:
+             e.g., <i class="fas fa-bookmark"></i>, <i class="fas fa-share-alt"></i>, etc.
+        -->
+    </head>
+    <body>
+
+    <div class="container">
+        <div class="left-column">
+            <div class="rating">
+                <span class="stars">★★★★★</span>
+                <span>5.00 (894 Đánh giá)</span>
+            </div>
+            <h1 class="course-main-title">Khóa học Kubernetes thực tế</h1>
+            <div class="category">Danh mục: devops</div>
+
+            <div class="video-placeholder">
+                <div class="video-top-bar">
+                    <div class="title-section">
+                        <div class="logo"><div class="logo-inner"></div></div>
+                        <span>Bài 0. Lộ trình Kubernetes và lưu ý để làm Kubernetes hiệu quả | Khoá học Ku...</span>
+                    </div>
+                    <div class="actions">
+                        <a href="#"><i class="icon-time"></i> Xem sau</a>
+                        <a href="#"><i class="icon-share-video"></i> Chia sẻ</a>
+                    </div>
+                </div>
+                <div class="video-content-area">
+                    <div class="main-video-title">Kubernetes thực tế</div>
+                    <div class="sub-video-title">{chi tiết và đúc kết}</div>
+                    <div class="play-button"></div>
                 </div>
             </div>
-            <div class="col-lg-6 text-center text-lg-right">
-                <div class="d-inline-flex align-items-center">
-                    <a class="text-white px-2" href="">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
-                    <a class="text-white px-2" href="">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                    <a class="text-white px-2" href="">
-                        <i class="fab fa-linkedin-in"></i>
-                    </a>
-                    <a class="text-white px-2" href="">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a class="text-white pl-2" href="">
-                        <i class="fab fa-youtube"></i>
-                    </a>
-                </div>
+
+            <div class="tabs">
+                <div class="active">Giới thiệu</div>
+                <div>Đánh giá</div>
             </div>
-        </div>
-    </div>
-    <!-- Topbar End -->
 
-
-    <!-- Navbar Start -->
-    <div class="container-fluid p-0">
-        <nav class="navbar navbar-expand-lg bg-white navbar-light py-3 py-lg-0 px-lg-5">
-            <a href="index.html" class="navbar-brand ml-lg-3">
-                <h1 class="m-0 text-uppercase text-primary"><i class="fa fa-book-reader mr-3"></i>Edukate</h1>
-            </a>
-            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-between px-lg-3" id="navbarCollapse">
-                <div class="navbar-nav mx-auto py-0">
-                    <a href="index.html" class="nav-item nav-link">Home</a>
-                    <a href="about.html" class="nav-item nav-link">About</a>
-                    <a href="course.html" class="nav-item nav-link">Courses</a>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle active" data-toggle="dropdown">Pages</a>
-                        <div class="dropdown-menu m-0">
-                            <a href="detail.html" class="dropdown-item active">Course Detail</a>
-                            <a href="feature.html" class="dropdown-item">Our Features</a>
-                            <a href="team.html" class="dropdown-item">Instructors</a>
-                            <a href="testimonial.html" class="dropdown-item">Testimonial</a>
-                        </div>
-                    </div>
-                    <a href="contact.html" class="nav-item nav-link">Contact</a>
-                </div>
-                <a href="" class="btn btn-primary py-2 px-4 d-none d-lg-block">Join Us</a>
-            </div>
-        </nav>
-    </div>
-    <!-- Navbar End -->
-
-
-    <!-- Header Start -->
-    <div class="jumbotron jumbotron-fluid page-header position-relative overlay-bottom" style="margin-bottom: 90px;">
-        <div class="container text-center py-5">
-            <h1 class="text-white display-1">Course Detail</h1>
-            <div class="d-inline-flex text-white mb-5">
-                <p class="m-0 text-uppercase"><a class="text-white" href="">Home</a></p>
-                <i class="fa fa-angle-double-right pt-1 px-3"></i>
-                <p class="m-0 text-uppercase">Course Detail</p>
-            </div>
-            <div class="mx-auto mb-5" style="width: 100%; max-width: 600px;">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <button class="btn btn-outline-light bg-white text-body px-4 dropdown-toggle" type="button" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">Courses</button>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">Courses 1</a>
-                            <a class="dropdown-item" href="#">Courses 2</a>
-                            <a class="dropdown-item" href="#">Courses 3</a>
-                        </div>
-                    </div>
-                    <input type="text" class="form-control border-light" style="padding: 30px 25px;" placeholder="Keyword">
-                    <div class="input-group-append">
-                        <button class="btn btn-secondary px-4 px-lg-5">Search</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Header End -->
-
-
-    <!-- Detail Start -->
-    <div class="container-fluid py-5">
-        <div class="container py-5">
-            <div class="row">
-                <div class="col-lg-8">
-                    <div class="mb-5">
-                        <div class="section-title position-relative mb-5">
-                            <h6 class="d-inline-block position-relative text-secondary text-uppercase pb-2">Course Detail</h6>
-                            <h1 class="display-4">Khóa học lập trình java</h1>
-                        </div>
-                        <img class="img-fluid rounded w-100 mb-4" src="/course/img/header.jpg" alt="Image">
-                        <p>Khóa học này được thiết kế dành cho những ai muốn bắt đầu hành trình lập trình của mình với ngôn ngữ Java. Từ những kiến thức căn bản nhất, học viên sẽ được hướng dẫn để hiểu rõ về cú pháp của Java, các cấu trúc điều khiển, và các khái niệm cơ bản của lập trình hướng đối tượng. Khóa học cũng bao gồm các bài thực hành để xây dựng ứng dụng đơn giản, giúp học viên có thể áp dụng lý thuyết vào thực tế một cách hiệu quả.</p>
-                    </div>
-
-                    <h2 class="mb-3">Khóa học được đề xuất</h2>
-                    <div class="owl-carousel related-carousel position-relative" style="padding: 0 30px;">
-                        <a class="courses-list-item position-relative d-block overflow-hidden mb-2" href="detail.html">
-                            <img class="img-fluid" src="/course/img/courses-1.jpg" alt="">
-                            <div class="courses-text">
-                                <h4 class="text-center text-white px-3">Thiết kế hệ thống</h4>
-                                <div class="border-top w-100 mt-3">
-                                    <div class="d-flex justify-content-between p-4">
-                                        <span class="text-white"><i class="fa fa-user mr-2"></i>TS.Lê Văn Minh</span>
-                                        <span class="text-white"><i class="fa fa-star mr-2"></i>4.5
-                                            <small>(250)</small></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                        <a class="courses-list-item position-relative d-block overflow-hidden mb-2" href="detail.html">
-                            <img class="img-fluid" src="/course/img/courses-2.jpg" alt="">
-                            <div class="courses-text">
-                                <h4 class="text-center text-white px-3">Đồ hoa máy tính</h4>
-                                <div class="border-top w-100 mt-3">
-                                    <div class="d-flex justify-content-between p-4">
-                                        <span class="text-white"><i class="fa fa-user mr-2"></i>TS.Nguyễn Đức Hiển</span>
-                                        <span class="text-white"><i class="fa fa-star mr-2"></i>4.5
-                                            <small>(250)</small></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                        <a class="courses-list-item position-relative d-block overflow-hidden mb-2" href="detail.html">
-                            <img class="img-fluid" src="/course/img/courses-3.jpg" alt="">
-                            <div class="courses-text">
-                                <h4 class="text-center text-white px-3">Web design & development courses for
-                                    beginners</h4>
-                                <div class="border-top w-100 mt-3">
-                                    <div class="d-flex justify-content-between p-4">
-                                        <span class="text-white"><i class="fa fa-user mr-2"></i>Jhon Doe</span>
-                                        <span class="text-white"><i class="fa fa-star mr-2"></i>4.5
-                                            <small>(250)</small></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-               </div>
-
-                <div class="col-lg-4 mt-5 mt-lg-0">
-                    <div class="bg-primary mb-5 py-3">
-                        <h3 class="text-white py-3 px-4 m-0">Thông tin khóa học</h3>
-                        <div class="d-flex justify-content-between border-bottom px-4">
-                            <h6 class="text-white my-3">Giảng viên</h6>
-                            <h6 class="text-white my-3">Th.S Lương Khánh Tý</h6>
-                        </div>
-                        <div class="d-flex justify-content-between border-bottom px-4">
-                            <h6 class="text-white my-3">Đánh giá</h6>
-                            <h6 class="text-white my-3">4.5 <small>(250)</small></h6>
-                        </div>
-                        <div class="d-flex justify-content-between border-bottom px-4">
-                            <h6 class="text-white my-3">Số bài học</h6>
-                            <h6 class="text-white my-3">15</h6>
-                        </div>
-                        <div class="d-flex justify-content-between border-bottom px-4">
-                            <h6 class="text-white my-3">Thời gian khóa học</h6>
-                            <h6 class="text-white my-3">30 giờ</h6>
-                        </div>
-                        <div class="d-flex justify-content-between border-bottom px-4">
-                            <h6 class="text-white my-3">Kỹ năng</h6>
-                            <h6 class="text-white my-3">Thiết kế website</h6>
-                        </div>
-                        <div class="d-flex justify-content-between px-4">
-                            <h6 class="text-white my-3">Ngôn ngữ</h6>
-                            <h6 class="text-white my-3">Tiếng Việt | English</h6>
-                        </div>
-                        <h5 class="text-white py-3 px-4 m-0">Giá: 1.tr VND</h5>
-                        <div class="py-3 px-4">
-                            <a class="btn btn-block btn-secondary py-3 px-5" href="https://devopsedu.vn/courses/devops-for-freshers/lesson/bai-10-trien-khai-du-an-java-spring/">Tham gia lớp ngay</a>
-                        </div>
-                    </div>
-
-                    <div class="mb-5">
-                        <h2 class="mb-3">Các khóa học khác</h2>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                                <a href="" class="text-decoration-none h6 m-0">Thiết kế hệ thống</a>
-                                <span class="badge badge-primary badge-pill">150</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                                <a href="" class="text-decoration-none h6 m-0">Cơ sỡ dữ liệu</a>
-                                <span class="badge badge-primary badge-pill">131</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                                <a href="" class="text-decoration-none h6 m-0">Chuyên ngành khởi nghiệp</a>
-                                <span class="badge badge-primary badge-pill">78</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                                <a href="" class="text-decoration-none h6 m-0">Lập trình Java nâng cao</a>
-                                <span class="badge badge-primary badge-pill">56</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                                <a href="" class="text-decoration-none h6 m-0">Marketing kỹ thuật số</a>
-                                <span class="badge badge-primary badge-pill">98</span>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="mb-5">
-                        <h2 class="mb-4">Khóa học đã xem</h2>
-                        <a class="d-flex align-items-center text-decoration-none mb-4" href="">
-                            <img class="img-fluid rounded" src="/course/img/courses-80x80.jpg" alt="">
-                            <div class="pl-3">
-                                <h6>Web design & development courses for beginners</h6>
-                                <div class="d-flex">
-                                    <small class="text-body mr-3"><i class="fa fa-user text-primary mr-2"></i>Jhon Doe</small>
-                                    <small class="text-body"><i class="fa fa-star text-primary mr-2"></i>4.5 (250)</small>
-                                </div>
-                            </div>
-                        </a>
-                        <a class="d-flex align-items-center text-decoration-none mb-4" href="">
-                            <img class="img-fluid rounded" src="/course/img/courses-80x80.jpg" alt="">
-                            <div class="pl-3">
-                                <h6>Web design & development courses for beginners</h6>
-                                <div class="d-flex">
-                                    <small class="text-body mr-3"><i class="fa fa-user text-primary mr-2"></i>Jhon Doe</small>
-                                    <small class="text-body"><i class="fa fa-star text-primary mr-2"></i>4.5 (250)</small>
-                                </div>
-                            </div>
-                        </a>
-                        <a class="d-flex align-items-center text-decoration-none mb-4" href="">
-                            <img class="img-fluid rounded" src="/course/img/courses-80x80.jpg" alt="">
-                            <div class="pl-3">
-                                <h6>Web design & development courses for beginners</h6>
-                                <div class="d-flex">
-                                    <small class="text-body mr-3"><i class="fa fa-user text-primary mr-2"></i>Jhon Doe</small>
-                                    <small class="text-body"><i class="fa fa-star text-primary mr-2"></i>4.5 (250)</small>
-                                </div>
-                            </div>
-                        </a>
-                        <a class="d-flex align-items-center text-decoration-none" href="">
-                            <img class="img-fluid rounded" src="/course/img/courses-80x80.jpg" alt="">
-                            <div class="pl-3">
-                                <h6>Web design & development courses for beginners</h6>
-                                <div class="d-flex">
-                                    <small class="text-body mr-3"><i class="fa fa-user text-primary mr-2"></i>Jhon Doe</small>
-                                    <small class="text-body"><i class="fa fa-star text-primary mr-2"></i>4.5 (250)</small>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Detail End -->
-
-
-    <!-- Footer Start -->
-    <div class="container-fluid position-relative overlay-top bg-dark text-white-50 py-5" style="margin-top: 90px;">
-        <div class="container mt-5 pt-5">
-            <div class="row">
-                <div class="col-md-6 mb-5">
-                    <a href="index.html" class="navbar-brand">
-                        <h1 class="mt-n2 text-uppercase text-white"><i class="fa fa-book-reader mr-3"></i>Edukate</h1>
-                    </a>
-                    <p class="m-0">Accusam nonumy clita sed rebum kasd eirmod elitr. Ipsum ea lorem at et diam est, tempor rebum ipsum sit ea tempor stet et consetetur dolores. Justo stet diam ipsum lorem vero clita diam</p>
-                </div>
-                <div class="col-md-6 mb-5">
-                    <h3 class="text-white mb-4">Newsletter</h3>
-                    <div class="w-100">
-                        <div class="input-group">
-                            <input type="text" class="form-control border-light" style="padding: 30px;" placeholder="Your Email Address">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary px-4">Sign Up</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 mb-5">
-                    <h3 class="text-white mb-4">Get In Touch</h3>
-                    <p><i class="fa fa-map-marker-alt mr-2"></i>123 Street, New York, USA</p>
-                    <p><i class="fa fa-phone-alt mr-2"></i>+012 345 67890</p>
-                    <p><i class="fa fa-envelope mr-2"></i>info@example.com</p>
-                    <div class="d-flex justify-content-start mt-4">
-                        <a class="text-white mr-4" href="#"><i class="fab fa-2x fa-twitter"></i></a>
-                        <a class="text-white mr-4" href="#"><i class="fab fa-2x fa-facebook-f"></i></a>
-                        <a class="text-white mr-4" href="#"><i class="fab fa-2x fa-linkedin-in"></i></a>
-                        <a class="text-white" href="#"><i class="fab fa-2x fa-instagram"></i></a>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-5">
-                    <h3 class="text-white mb-4">Our Courses</h3>
-                    <div class="d-flex flex-column justify-content-start">
-                        <a class="text-white-50 mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Web Design</a>
-                        <a class="text-white-50 mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Apps Design</a>
-                        <a class="text-white-50 mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Marketing</a>
-                        <a class="text-white-50 mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Research</a>
-                        <a class="text-white-50" href="#"><i class="fa fa-angle-right mr-2"></i>SEO</a>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-5">
-                    <h3 class="text-white mb-4">Quick Links</h3>
-                    <div class="d-flex flex-column justify-content-start">
-                        <a class="text-white-50 mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Privacy Policy</a>
-                        <a class="text-white-50 mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Terms & Condition</a>
-                        <a class="text-white-50 mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Regular FAQs</a>
-                        <a class="text-white-50 mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Help & Support</a>
-                        <a class="text-white-50" href="#"><i class="fa fa-angle-right mr-2"></i>Contact</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="container-fluid bg-dark text-white-50 border-top py-4" style="border-color: rgba(256, 256, 256, .1) !important;">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 text-center text-md-left mb-3 mb-md-0">
-                    <p class="m-0">Copyright &copy; <a class="text-white" href="#">Your Site Name</a>. All Rights Reserved.
+            <div class="course-description">
+                <h2 class="section-title">Giới thiệu về khóa học</h2>
+                <div class="description-content">
+                    <p>
+                        Khóa Học Kubernetes Miễn Phí Thực Tế – Xây Dựng Nền Tảng DevOps Vững Chắc,
+                        <!-- More description paragraphs would go here -->
                     </p>
                 </div>
-                <div class="col-md-6 text-center text-md-right">
-                    <p class="m-0">Designed by <a class="text-white" href="https://htmlcodex.com">HTML Codex</a>
-                    </p>
+            </div>
+        </div>
+
+        <div class="right-column">
+            <div class="right-column-sticky-content">
+                <div class="save-share-actions">
+                    <a href="#"><i class="icon-bookmark"></i> <span>Danh sách yêu thích</span></a>
+                    <a href="#"><i class="icon-share"></i> <span>Chia sẻ</span></a>
+                </div>
+
+                <div class="price-box">
+                    <div class="price-header">Miễn phí</div>
+                    <a href="/khoa-hoc-Kubernetes" class="btn-register">Đăng ký ngay</a>
+                    <p class="free-enroll-text">Tham gia khóa học miễn phí</p>
+
+                    <ul class="course-info-list">
+                        <li><i class="icon-level"></i> <span>Trung cấp</span></li>
+                        <li><i class="icon-students"></i> <span>7609 Tổng số học viên</span></li>
+                        <li><i class="icon-update"></i> <span>Tháng 5 12, 2025 Cập nhật mới nhất</span></li>
+                        <li><i class="icon-certificate"></i> <span>Certificate of completion</span></li>
+                    </ul>
+                </div>
+
+                <div class="instructor-section">
+                    <h4 class="section-sub-title">Khóa học bởi</h4>
+                    <div class="instructor-info">
+                        <div class="instructor-avatar">
+                            <div class="instructor-avatar-content">
+                                <span class="avatar-e-char">E</span>
+                                <div class="avatar-bar-container">
+                                    <div class="avatar-bar"></div>
+                                    <div class="avatar-bar"></div>
+                                    <div class="avatar-bar"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="instructor-details">
+                            <p class="name">elroydevops</p>
+                            <p class="title">DevOps Engineer</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="resources-section">
+                    <h4 class="section-sub-title">Các tài liệu khóa học</h4>
+                    <ul class="resources-list">
+                        <li>
+                            <span>Nhóm chat trao đổi:</span>
+                            <a href="https://www.fb.com/groups/devopsedu.vn" target="_blank">https://www.fb.com/groups/devopsedu.vn</a>
+                        </li>
+                        <!-- Add more resources if needed -->
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Footer End -->
 
+    </body>
+    </html>
 
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary rounded-0 btn-lg-square back-to-top"><i class="fa fa-angle-double-up"></i></a>
-
-
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/counterup/counterup.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-
-    <!-- Template Javascript -->
-    <script src="js/main.js"></script>
+</main>
 </body>
-
 </html>

@@ -1,409 +1,220 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{user/layout}">
 
-<head>
-    <meta charset="utf-8">
-    <title>LifeSure - Life Insurance Website Template</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
-    <link href="/course/img/favicon.ico" rel="icon">
+<main layout:fragment="content">
 
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
-
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-
-    <!-- Libraries Stylesheet -->
-    <link href="/course/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="/course/css/style.css" rel="stylesheet">
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:slnt,wght@-10..0,100..900&display=swap" rel="stylesheet">
-
-    <!-- Icon Font Stylesheet -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-
-    <!-- Libraries Stylesheet -->
-    <link rel="stylesheet" href="/user/lib/animate/animate.min.css"/>
-    <link href="/user/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
-    <link href="/user/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-
-
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="/user/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Template Stylesheet -->
-    <link href="/user/css/style.css" rel="stylesheet">
-</head>
-
-<body>
-
-<!-- Spinner Start -->
-<div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-    <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-        <span class="sr-only">Loading...</span>
-    </div>
-</div>
-<!-- Spinner End -->
-
-<!-- Topbar Start -->
-<div class="container-fluid topbar px-0 px-lg-4 bg-light py-2 d-none d-lg-block">
-    <div class="container">
-        <div class="row gx-0 align-items-center">
-            <div class="col-lg-8 text-center text-lg-start mb-lg-0">
-                <div class="d-flex flex-wrap">
-                    <div class="border-end border-primary pe-3">
-                        <a href="#" class="text-muted small"><i class="fas fa-map-marker-alt text-primary me-2"></i>Da Nang</a>
-                    </div>
-                    <div class="ps-3">
-                        <a href="mailto:example@gmail.com" class="text-muted small"><i class="fas fa-envelope text-primary me-2"></i>Nhatdc.22it@vku.udn.vn</a>
-                    </div>
-                </div>
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container header-content">
+            <a href="#" class="logo">EduExplorer</a>
+            <div class="search-bar">
+                <input type="text" placeholder="Tìm kiếm...">
             </div>
-            <div class="col-lg-4 text-center text-lg-end">
-                <div class="d-flex justify-content-end">
-                    <div class="d-flex border-end border-primary pe-3">
-                        <a class="btn p-0 text-primary me-3" href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn p-0 text-primary me-3" href="#"><i class="fab fa-twitter"></i></a>
-                        <a class="btn p-0 text-primary me-3" href="#"><i class="fab fa-instagram"></i></a>
-                        <a class="btn p-0 text-primary me-0" href="#"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                    <div class="dropdown ms-3">
-                        <a href="#" class="dropdown-toggle text-dark" data-bs-toggle="dropdown"><small><i class="fas fa-globe-europe text-primary me-2"></i> Viet Nam</small></a>
-                        <div class="dropdown-menu rounded">
-                            <a href="#" class="dropdown-item">Việt Nam</a>
-                            <a href="#" class="dropdown-item">Bangla</a>
-                            <a href="#" class="dropdown-item">French</a>
-                            <a href="#" class="dropdown-item">Spanish</a>
-                            <a href="#" class="dropdown-item">Arabic</a>
-                        </div>
-                    </div>
-                </div>
+            <div class="header-actions">
+                <a href="#" class="notification-icon"><i class="far fa-bell"></i> <span class="badge">1</span></a>
+                <a href="#" class="btn btn-create-post">Tạo bài viết</a>
+                <a href="#" class="user-avatar">ĐC</a>
             </div>
         </div>
-    </div>
-</div>
-<!-- Topbar End -->
+    </header>
 
-<!-- Navbar & Hero Start -->
-<div class="container-fluid nav-bar px-0 px-lg-4 py-lg-0">
-    <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-light">
-            <a href="#" class="navbar-brand p-0">
-                <h1 class="text-primary mb-0"><i class="fab fa-slack me-2"></i> EduExplore</h1>
-                <!-- <img src="img/logo.png" alt="Logo"> -->
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                <span class="fa fa-bars"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <div class="navbar-nav mx-0 mx-lg-auto">
-                    <a href="index.html" class="nav-item nav-link active">Trang chủ</a>
-                    <a href="about.html" class="nav-item nav-link">Đại học</a>
-                    <a href="service.html" class="nav-item nav-link">Cao đẳng</a>
-                    <a href="service.html" class="nav-item nav-link">Sự kiện</a>
-                    <a href="service.html" class="nav-item nav-link">Tuyển sinh </a>
-                    <a href="service.html" class="nav-item nav-link">Học thử</a>
-
-                    <!--          <div class="nav-item dropdown">-->
-                    <!--            <a href="#" class="nav-link" data-bs-toggle="dropdown">-->
-                    <!--              <span class="dropdown-toggle">Pages</span>-->
-                    <!--            </a>-->
-                    <!--            <div class="dropdown-menu">-->
-                    <!--              <a href="feature.html" class="dropdown-item">Our Features</a>-->
-                    <!--              <a href="team.html" class="dropdown-item">Our team</a>-->
-                    <!--              <a href="testimonial.html" class="dropdown-item">Testimonial</a>-->
-                    <!--              <a href="FAQ.html" class="dropdown-item">FAQs</a>-->
-                    <!--              <a href="404.html" class="dropdown-item">404 Page</a>-->
-                    <!--            </div>-->
-                    <!--          </div>-->
-                    <div class="nav-btn px-3">
-                        <button class="btn-search btn btn-primary btn-md-square rounded-circle flex-shrink-0" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search"></i></button>
-                        <a href="#" class="btn btn-primary rounded-pill py-2 px-4 ms-3 flex-shrink-0"> Đăng nhập</a>
-                    </div>
-                </div>
-            </div>
-            <div class="d-none d-xl-flex flex-shrink-0 ps-4">
-                <a href="#" class="btn btn-light btn-lg-square rounded-circle position-relative wow tada" data-wow-delay=".9s">
-                    <i class="fa fa-phone-alt fa-2x"></i>
-                    <div class="position-absolute" style="top: 7px; right: 12px;">
-                        <span><i class="fa fa-comment-dots text-secondary"></i></span>
-                    </div>
-                </a>
-                <div class="d-flex flex-column ms-3">
-                    <span>Liên hệ với chúng tôi</span>
-                    <a href="tel:+ 0123 456 7890"><span class="text-dark">(+84)0972 087 664</span></a>
-                </div>
-            </div>
-        </nav>
-    </div>
-</div>
-<!-- Navbar & Hero End -->
-
-<!-- Header Start -->
-    <div class="jumbotron jumbotron-fluid page-header position-relative overlay-bottom" style="margin-bottom: 90px;">
-        <div class="container text-center py-5">
-            <h1 class="text-white display-1">Khóa học</h1>
-            <div class="d-inline-flex text-white mb-5">
-                <p class="m-0 text-uppercase"><a class="text-white" href="">Trang chủ</a></p>
-                <i class="fa fa-angle-double-right pt-1 px-3"></i>
-                <p class="m-0 text-uppercase">Courses</p>
-            </div>
-            <div class="mx-auto mb-5" style="width: 100%; max-width: 600px;">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <button class="btn btn-outline-light bg-white text-body px-4 dropdown-toggle" type="button" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">Courses</button>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">Courses 1</a>
-                            <a class="dropdown-item" href="#">Courses 2</a>
-                            <a class="dropdown-item" href="#">Courses 3</a>
-                        </div>
-                    </div>
-                    <input type="text" class="form-control border-light" style="padding: 30px 25px;" placeholder="Keyword">
-                    <div class="input-group-append">
-                        <button class="btn btn-secondary px-4 px-lg-5">Search</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Header End -->
-
-
-    <!-- Courses Start -->
-    <div class="container-fluid py-5">
-        <div class="container py-5">
-            <div class="row mx-0 justify-content-center">
-                <div class="col-lg-8">
-                    <div class="section-title text-center position-relative mb-5">
-                        <h1 class="display-4">Ngành công nghệ thông tin</h1>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-4 col-md-6 pb-4">
-                    <a class="courses-list-item position-relative d-block overflow-hidden mb-2" href="/user/course/detail">
-                        <img class="img-fluid" src="/course/img/courses-1.jpg" alt="">
-                        <div class="courses-text">
-                            <h4 class="text-center text-white px-3">Khóa lập trình java</h4>
-                            <div class="border-top w-100 mt-3">
-                                <div class="d-flex justify-content-between p-4">
-                                    <span class="text-white"><i class="fa fa-user mr-2"></i>Jhon Doe</span>
-                                    <span class="text-white"><i class="fa fa-star mr-2"></i>4.5
-                                        <small>(250)</small></span>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-4 col-md-6 pb-4">
-                    <a class="courses-list-item position-relative d-block overflow-hidden mb-2" href="detail.html">
-                        <img class="img-fluid" src="/course/img/courses-2.jpg" alt="">
-                        <div class="courses-text">
-                            <h4 class="text-center text-white px-3">Web design & development courses for
-                                beginners</h4>
-                            <div class="border-top w-100 mt-3">
-                                <div class="d-flex justify-content-between p-4">
-                                    <span class="text-white"><i class="fa fa-user mr-2"></i>Jhon Doe</span>
-                                    <span class="text-white"><i class="fa fa-star mr-2"></i>4.5
-                                        <small>(250)</small></span>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-4 col-md-6 pb-4">
-                    <a class="courses-list-item position-relative d-block overflow-hidden mb-2" href="detail.html">
-                        <img class="img-fluid" src="/course/img/courses-3.jpg" alt="">
-                        <div class="courses-text">
-                            <h4 class="text-center text-white px-3">Web design & development courses for
-                                beginners</h4>
-                            <div class="border-top w-100 mt-3">
-                                <div class="d-flex justify-content-between p-4">
-                                    <span class="text-white"><i class="fa fa-user mr-2"></i>Jhon Doe</span>
-                                    <span class="text-white"><i class="fa fa-star mr-2"></i>4.5
-                                        <small>(250)</small></span>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-4 col-md-6 pb-4">
-                    <a class="courses-list-item position-relative d-block overflow-hidden mb-2" href="detail.html">
-                        <img class="img-fluid" src="/course/img/courses-4.jpg" alt="">
-                        <div class="courses-text">
-                            <h4 class="text-center text-white px-3">Web design & development courses for
-                                beginners</h4>
-                            <div class="border-top w-100 mt-3">
-                                <div class="d-flex justify-content-between p-4">
-                                    <span class="text-white"><i class="fa fa-user mr-2"></i>Jhon Doe</span>
-                                    <span class="text-white"><i class="fa fa-star mr-2"></i>4.5
-                                        <small>(250)</small></span>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-4 col-md-6 pb-4">
-                    <a class="courses-list-item position-relative d-block overflow-hidden mb-2" href="detail.html">
-                        <img class="img-fluid" src="/course/img/courses-5.jpg" alt="">
-                        <div class="courses-text">
-                            <h4 class="text-center text-white px-3">Web design & development courses for
-                                beginners</h4>
-                            <div class="border-top w-100 mt-3">
-                                <div class="d-flex justify-content-between p-4">
-                                    <span class="text-white"><i class="fa fa-user mr-2"></i>Jhon Doe</span>
-                                    <span class="text-white"><i class="fa fa-star mr-2"></i>4.5
-                                        <small>(250)</small></span>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-4 col-md-6 pb-4">
-                    <a class="courses-list-item position-relative d-block overflow-hidden mb-2" href="detail.html">
-                        <img class="img-fluid" src="/course/img/courses-6.jpg" alt="">
-                        <div class="courses-text">
-                            <h4 class="text-center text-white px-3">Web design & development courses for
-                                beginners</h4>
-                            <div class="border-top w-100 mt-3">
-                                <div class="d-flex justify-content-between p-4">
-                                    <span class="text-white"><i class="fa fa-user mr-2"></i>Jhon Doe</span>
-                                    <span class="text-white"><i class="fa fa-star mr-2"></i>4.5
-                                        <small>(250)</small></span>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-12">
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination pagination-lg justify-content-center mb-0">
-                          <li class="page-item disabled">
-                            <a class="page-link rounded-0" href="#" aria-label="Previous">
-                              <span aria-hidden="true">&laquo;</span>
-                              <span class="sr-only">Previous</span>
-                            </a>
-                          </li>
-                          <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                          <li class="page-item"><a class="page-link" href="#">2</a></li>
-                          <li class="page-item"><a class="page-link" href="#">3</a></li>
-                          <li class="page-item">
-                            <a class="page-link rounded-0" href="#" aria-label="Next">
-                              <span aria-hidden="true">&raquo;</span>
-                              <span class="sr-only">Next</span>
-                            </a>
-                          </li>
-                        </ul>
-                      </nav>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Courses End -->
-
-
-    <!-- Footer Start -->
-    <div class="container-fluid position-relative overlay-top bg-dark text-white-50 py-5" style="margin-top: 90px;">
-        <div class="container mt-5 pt-5">
-            <div class="row">
-                <div class="col-md-6 mb-5">
-                    <a href="index.html" class="navbar-brand">
-                        <h1 class="mt-n2 text-uppercase text-white"><i class="fa fa-book-reader mr-3"></i>Edukate</h1>
-                    </a>
-                    <p class="m-0">Accusam nonumy clita sed rebum kasd eirmod elitr. Ipsum ea lorem at et diam est, tempor rebum ipsum sit ea tempor stet et consetetur dolores. Justo stet diam ipsum lorem vero clita diam</p>
-                </div>
-                <div class="col-md-6 mb-5">
-                    <h3 class="text-white mb-4">Newsletter</h3>
-                    <div class="w-100">
-                        <div class="input-group">
-                            <input type="text" class="form-control border-light" style="padding: 30px;" placeholder="Your Email Address">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary px-4">Sign Up</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 mb-5">
-                    <h3 class="text-white mb-4">Get In Touch</h3>
-                    <p><i class="fa fa-map-marker-alt mr-2"></i>123 Street, New York, USA</p>
-                    <p><i class="fa fa-phone-alt mr-2"></i>+012 345 67890</p>
-                    <p><i class="fa fa-envelope mr-2"></i>info@example.com</p>
-                    <div class="d-flex justify-content-start mt-4">
-                        <a class="text-white mr-4" href="#"><i class="fab fa-2x fa-twitter"></i></a>
-                        <a class="text-white mr-4" href="#"><i class="fab fa-2x fa-facebook-f"></i></a>
-                        <a class="text-white mr-4" href="#"><i class="fab fa-2x fa-linkedin-in"></i></a>
-                        <a class="text-white" href="#"><i class="fab fa-2x fa-instagram"></i></a>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-5">
-                    <h3 class="text-white mb-4">Our Courses</h3>
-                    <div class="d-flex flex-column justify-content-start">
-                        <a class="text-white-50 mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Web Design</a>
-                        <a class="text-white-50 mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Apps Design</a>
-                        <a class="text-white-50 mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Marketing</a>
-                        <a class="text-white-50 mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Research</a>
-                        <a class="text-white-50" href="#"><i class="fa fa-angle-right mr-2"></i>SEO</a>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-5">
-                    <h3 class="text-white mb-4">Quick Links</h3>
-                    <div class="d-flex flex-column justify-content-start">
-                        <a class="text-white-50 mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Privacy Policy</a>
-                        <a class="text-white-50 mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Terms & Condition</a>
-                        <a class="text-white-50 mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Regular FAQs</a>
-                        <a class="text-white-50 mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Help & Support</a>
-                        <a class="text-white-50" href="#"><i class="fa fa-angle-right mr-2"></i>Contact</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="container-fluid bg-dark text-white-50 border-top py-4" style="border-color: rgba(256, 256, 256, .1) !important;">
+    <!-- Navigation -->
+    <nav class="main-nav">
         <div class="container">
-            <div class="row">
-                <div class="col-md-6 text-center text-md-left mb-3 mb-md-0">
-                    <p class="m-0">Copyright &copy; <a class="text-white" href="#">Your Site Name</a>. All Rights Reserved.
-                    </p>
+            <span class="nav-title">Đề xuất</span>
+            <ul>
+                <li><a href="#" class="active">DevOps Thực Tế Doanh Nghiệp</a></li>
+                <li><a href="#">Lộ trình</a></li>
+                <li><a href="#">Ebooks</a></li>
+                <li><a href="#">Tài liệu</a></li>
+                <li><a href="#">Group chat</a></li>
+                <li><a href="#">DevOps ViệtNam</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container hero-content">
+            <h1>Tổng kết năm 2024</h1>
+            <p>Thành quả của cả cộng đồng DevOps ViệtNam chúng ta</p>
+            <a href="#" class="btn btn-hero">Nhìn lại</a>
+            <div class="slider-dots">
+                <span></span><span class="active"></span><span></span><span></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Khóa học DevOps Section -->
+    <section class="courses-section section-padding">
+        <div class="container">
+            <h2 class="section-title">Khóa học CNTT</h2>
+            <div class="grid-container course-grid">
+                <!-- Course Card 1 -->
+                <div class="card course-card">
+                    <a href="#" class="card-link">
+                        <div class="card-image-wrapper" style="background-image: url('https://devopsedu.vn/wp-content/uploads/2024/02/devops-for-fresher-feature-768x432.webp');">
+
+                        </div>
+                        <div class="card-info">
+                            <div class="rating">
+                                <span class="stars">
+                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                                </span>
+                                <span class="rating-value">4.99</span>
+                                <span class="review-count">(1831)</span>
+                            </div>
+                            <p class="card-description-below">DevOps for Freshers</p>
+                        </div>
+                    </a>
                 </div>
-                <div class="col-md-6 text-center text-md-right">
-                    <p class="m-0">Designed by <a class="text-white" href="https://htmlcodex.com">HTML Codex</a>
-                    </p>
+                <!-- Course Card 2 -->
+                <div class="card course-card">
+                    <a href="/dang-ki-khoa-hoc" class="card-link">
+                        <div class="card-image-wrapper" style="background-image: url('https://devopsedu.vn/wp-content/uploads/2024/11/k8s-feature-768x432.webp');">
+
+                        </div>
+                        <div class="card-info">
+                            <div class="rating">
+                                 <span class="stars">
+                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                </span>
+                                <span class="rating-value">5.00</span>
+                                <span class="review-count">(894)</span>
+                            </div>
+                            <p class="card-description-below">Khóa học Kubernetes thực tế</p>
+                        </div>
+                    </a>
+                </div>
+                <!-- Course Card 3 -->
+                <div class="card course-card">
+                    <a href="#" class="card-link">
+                        <div class="card-image-wrapper" style="background-image: url('https://devopsedu.vn/wp-content/uploads/2024/11/Deploying-HA-Tools-3-768x432.jpg');">
+
+                        </div>
+                        <div class="card-info">
+                            <div class="rating">
+                                <span class="stars">
+                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                </span>
+                                <span class="rating-value">5.00</span>
+                                <span class="review-count">(101)</span>
+                            </div>
+                            <p class="card-description-below">Triển khai các công cụ High Availability</p>
+                        </div>
+                    </a>
+                </div>
+                <!-- Course Card 4 (Coming Soon) -->
+                <div class="card course-card">
+                    <a href="#" class="card-link">
+                        <div class="card-image-wrapper" style="background-image: url('data:image/jpeg;base64,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'); background-color: #BDBDBD; background-blend-mode: multiply; filter: grayscale(80%);">
+
+                            <p class="course-coming-soon">(coming soon)</p>
+                        </div>
+                        <div class="card-info">
+                            <!-- No rating for coming soon -->
+                            <p class="card-description-below">Xây dựng hệ thống giám sát thực tế</p>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Footer End -->
+    </section>
 
+    <!-- Bài viết nổi bật Section -->
+    <section class="articles-section section-padding">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Bài viết nổi bật</h2>
+                <a href="#" class="view-all-link">Xem tất cả</a>
+            </div>
+            <div class="grid-container article-grid">
+                <!-- Article Card 1 -->
+                <div class="card article-card">
+                    <a href="#" class="card-link">
+                        <div class="card-image-wrapper article-image" style="background-image: url('https://devopsedu.vn/wp-content/uploads/2025/02/DevOps-on-AWS-Hoang-Guruu-768x432.webp');">
 
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary rounded-0 btn-lg-square back-to-top"><i class="fa fa-angle-double-up"></i></a>
-
-
-
-<!-- JavaScript Libraries -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="/user/lib/wow/wow.min.js"></script>
-<script src="/user/lib/easing/easing.min.js"></script>
-<script src="/user/lib/waypoints/waypoints.min.js"></script>
-<script src="/user/lib/counterup/counterup.min.js"></script>
-<script src="/user/lib/lightbox/js/lightbox.min.js"></script>
-<script src="/user/lib/owlcarousel/owl.carousel.min.js"></script>
-
-
-<!-- Template Javascript -->
-<script src="/user/js/main.js"></script>
+                        </div>
+                        <div class="card-info">
+                            <p class="card-description-below">Tổng hợp các bạn đã có việc làm DevOps từ kiến thức devopsedu.vn</p>
+                        </div>
+                    </a>
+                </div>
+                <!-- Article Card 2 -->
+                <div class="card article-card">
+                    <a href="#" class="card-link">
+                        <div class="card-image-wrapper article-image" style="background-image: url('https://devopsedu.vn/wp-content/uploads/2025/02/DevOps-on-AWS-Hoang-Guruu-768x432.webp');">
+                        </div>
+                        <div class="card-info">
+                            <p class="card-description-below">Lộ trình trở thành DevOps Engineer mới nhất (thực tế)</p>
+                        </div>
+                    </a>
+                </div>
+                <!-- Article Card 3 -->
+                <div class="card article-card">
+                    <a href="#" class="card-link">
+                        <div class="card-image-wrapper article-image" style="background-image: url('https://devopsedu.vn/wp-content/uploads/2024/08/mindset-6.png');">
+                        </div>
+                        <div class="card-info">
+                            <p class="card-description-below">Một bài viết giúp bạn xác định “tâm thức con người”</p>
+                        </div>
+                    </a>
+                </div>
+                <!-- Article Card 4 -->
+                <div class="card article-card">
+                    <a href="#" class="card-link">
+                        <div class="card-image-wrapper article-image" style="background-image: url('https://devopsedu.vn/wp-content/uploads/2024/04/mindset-2.png');">
+                        </div>
+                        <div class="card-info">
+                            <p class="card-description-below">Bài viết tiết kiệm “x năm” đi làm của bạn</p>
+                        </div>
+                    </a>
+                </div>
+                <!-- Article Card 5 -->
+                <div class="card article-card">
+                    <a href="#" class="card-link">
+                        <div class="card-image-wrapper article-image" style="background-image: url('https://devopsedu.vn/wp-content/uploads/2024/07/cach-su-dung-sonarqube-anh-dai-dien-latest.png');">
+                        </div>
+                        <div class="card-info">
+                            <p class="card-description-below">Cách dùng Sonarqube (sẵn mẫu cấu hình sử dụng mọi dự án)</p>
+                        </div>
+                    </a>
+                </div>
+                <!-- Article Card 6 -->
+                <div class="card article-card">
+                    <a href="#" class="card-link">
+                        <div class="card-image-wrapper article-image" style="background-image: url('https://devopsedu.vn/wp-content/uploads/2024/08/10-cach-bao-mat-ssh-tren-linux-trong-thuc-te.png');">
+                        </div>
+                        <div class="card-info">
+                            <p class="card-description-below">10 cách bảo mật ssh trên Linux thực tế</p>
+                        </div>
+                    </a>
+                </div>
+                <!-- Article Card 7 -->
+                <div class="card article-card">
+                    <a href="#" class="card-link">
+                        <div class="card-image-wrapper article-image" style="background-image: url('https://devopsedu.vn/wp-content/uploads/2024/07/trien-khai-cac-database-bang-docker-anh-dai-dien-latest-1.jpg');">
+                        </div>
+                        <div class="card-info">
+                            <p class="card-description-below">Triển khai các databases bằng docker</p>
+                        </div>
+                    </a>
+                </div>
+                <!-- Article Card 8 -->
+                <div class="card article-card">
+                    <a href="#" class="card-link">
+                        <div class="card-image-wrapper article-image" style="background-image: url('https://devopsedu.vn/wp-content/uploads/2024/07/cac-phuong-phap-bao-mat-container-anh-dai-dien-latest-1.jpg');">
+                        </div>
+                        <div class="card-info">
+                            <p class="card-description-below">Các phương pháp bảo mật container (thực tế)</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
 </body>
-
 </html>

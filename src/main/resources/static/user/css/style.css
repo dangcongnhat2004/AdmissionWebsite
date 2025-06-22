@@ -919,7 +919,481 @@
     justify-content: space-between; /* Tạo không gian giữa các phần tử */
     min-width: 200px; /* Đặt chiều rộng tối thiểu */
 }
+/* Header */
+.site-header {
+    background-color: #fff;
+    padding: 10px 0;
+    border-bottom: 1px solid #e0e0e0;
+    position: sticky; /* Optional: make header sticky */
+    top: 0;
+    z-index: 1000; /* Ensure header is above other content */
+}
 
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #2c3e50;
+    text-decoration: none;
+}
+
+.search-bar input[type="text"] {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    min-width: 300px;
+    background-color: #f0f0f0;
+}
+.search-bar input[type="text"]:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+}
+
+.header-actions a {
+    margin-left: 15px;
+    text-decoration: none;
+    color: #555;
+    display: flex;
+    align-items: center;
+}
+.notification-icon {
+    position: relative;
+}
+.notification-icon .badge {
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 1px 5px; /* Adjusted padding */
+    font-size: 0.65em; /* Adjusted font size */
+    position: absolute;
+    top: -5px;      /* Fine-tune position */
+    right: -5px;     /* Fine-tune position */
+}
+.notification-icon i {
+    font-size: 1.2em;
+}
+
+.btn-create-post {
+    background-color: #e74c3c;
+    color: white !important;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+.btn-create-post:hover {
+    background-color: #c0392b;
+}
+
+.user-avatar {
+    background-color: #f0ad4e;
+    color: white !important;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+/* Main Navigation */
+.main-nav {
+    background-color: #fff;
+    padding: 10px 0;
+    border-bottom: 1px solid #e0e0e0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.main-nav .container {
+    display: flex;
+    align-items: center;
+}
+.nav-title {
+    font-weight: bold;
+    margin-right: 20px;
+    font-size: 1.1em;
+    color: #333;
+}
+.main-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center; /* Align items vertically */
+}
+
+.main-nav ul li {
+    margin-right: 15px; /* Slightly reduced margin */
+}
+.main-nav ul li:last-child {
+    margin-right: 0;
+}
+
+.main-nav ul li a {
+    text-decoration: none;
+    color: #555;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 0.9em;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.main-nav ul li a:hover,
+.main-nav ul li a.active {
+    background-color: #e9ecef;
+    color: #007bff; /* Example active color */
+}
+
+/* Hero Section */
+.hero-section {
+    background-color: #4CAF50; /* Green from image */
+    color: white;
+    padding: 60px 0 40px; /* Adjusted padding */
+    text-align: center;
+    /* Nếu bạn có ảnh nền chung cho hero section: */
+    /* background-image: url('../images/hero-bg.jpg'); */
+    background-size: cover;
+    background-position: center;
+}
+
+.hero-content h1 {
+    font-size: 2.8em;
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.hero-content p {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+    opacity: 0.9;
+}
+
+.btn-hero {
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+    padding: 12px 25px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    display: inline-block; /* Ensures padding and margin work correctly */
+}
+
+.btn-hero:hover {
+    background-color: white;
+    color: #4CAF50;
+}
+.slider-dots {
+    margin-top: 30px;
+}
+.slider-dots span {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: rgba(255,255,255,0.5);
+    margin: 0 5px;
+    cursor: pointer;
+}
+.slider-dots span.active {
+    background-color: white;
+    width: 12px; /* Make active dot slightly larger */
+    height: 12px;
+}
+
+
+/* Sections */
+.section-padding {
+    padding: 50px 0; /* Increased padding */
+}
+
+.section-title {
+    font-size: 2em;
+    margin-top: 0;
+    margin-bottom: 30px;
+    color: #2c3e50;
+    font-weight: 600;
+}
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+.section-header .section-title {
+    margin-bottom: 0;
+}
+.view-all-link {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+}
+.view-all-link:hover {
+    text-decoration: underline;
+}
+
+/* Grid Container */
+.grid-container {
+    display: grid;
+    gap: 25px; /* Increased gap */
+}
+
+.course-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+.article-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+
+/* Card Styling */
+.card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* Softer shadow */
+    overflow: hidden;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Ensure cards in a row have same height if needed */
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+}
+
+.card-link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.card-image-wrapper {
+    height: 180px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px; /* Increased padding for text on image */
+    color: white;
+}
+
+/* Specific for article titles that might be longer and need top alignment */
+.article-image {
+    justify-content: flex-start;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.card-image-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.5)); /* Softer gradient overlay */
+    z-index: 1;
+    border-radius: 8px 8px 0 0; /* Match card radius if image is first element */
+}
+.card-image-wrapper h3, .card-image-wrapper p {
+    position: relative;
+    z-index: 2;
+    margin: 4px 0; /* Adjusted margin */
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5); /* Text shadow for better readability */
+}
+
+.course-title-on-image, .article-title-on-image {
+    font-size: 1.3em; /* Adjusted size */
+    font-weight: 600; /* Bolder */
+    line-height: 1.3;
+}
+.article-title-on-image {
+    font-size: 1.25em; /* Slightly smaller for articles */
+}
+
+.course-subtitle-on-image {
+    font-size: 0.85em; /* Adjusted size */
+    opacity: 0.9;
+}
+.course-coming-soon {
+    font-size: 0.85em;
+    font-style: italic;
+    background-color: rgba(0,0,0,0.6);
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-top: 10px;
+    display: inline-block;
+}
+
+.card-info {
+    padding: 20px; /* Increased padding */
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.rating {
+    margin-bottom: 12px; /* Increased margin */
+    font-size: 0.9em;
+    color: #666;
+    display: flex;
+    align-items: center;
+}
+.rating .stars {
+    color: #f39c12; /* Gold color for stars */
+    margin-right: 8px; /* Increased margin */
+}
+.rating .stars .fa-star, .rating .stars .fa-star-half-alt, .rating .stars .far.fa-star {
+    margin-right: 2px; /* Spacing between stars */
+}
+.rating .rating-value {
+    font-weight: bold;
+    color: #333;
+    margin-right: 5px;
+}
+.rating .review-count {
+    color: #777;
+}
+
+.card-description-below {
+    font-size: 1em;
+    color: #333;
+    font-weight: 500;
+    margin-top: auto; /* Pushes description to bottom */
+    line-height: 1.4;
+}
+.article-card .card-description-below {
+    font-size: 0.95em;
+    color: #555;
+    font-weight: normal;
+}
+
+/* Footer */
+.site-footer-bottom {
+    text-align: center;
+    padding: 25px 0;
+    background-color: #343a40;
+    color: #f8f9fa;
+    margin-top: 50px; /* Increased margin */
+    font-size: 0.9em;
+}
+.site-footer-bottom p {
+    margin: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .search-bar input[type="text"] {
+        min-width: 200px;
+    }
+    .course-grid, .article-grid {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        align-items: stretch; /* Make items full width */
+    }
+    .logo {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+    .search-bar {
+        margin: 10px 0;
+        width: 100%;
+    }
+    .search-bar input[type="text"] {
+        width: calc(100% - 24px); /* Account for padding */
+    }
+    .header-actions {
+        justify-content: space-around; /* Distribute actions */
+        width: 100%;
+        margin-top: 10px;
+    }
+    .header-actions a {
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+
+    .main-nav .container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .main-nav ul {
+        flex-direction: column;
+        width: 100%;
+        margin-top: 10px;
+    }
+    .main-nav ul li {
+        margin-right: 0;
+        margin-bottom: 5px;
+        width: 100%;
+    }
+    .main-nav ul li a {
+        display: block; /* Make links full width */
+        text-align: center;
+    }
+
+    .hero-content h1 {
+        font-size: 2.2em;
+    }
+    .hero-content p {
+        font-size: 1.1em;
+    }
+
+    .course-grid, .article-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Or simply 1fr for single column */
+    }
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .section-header .section-title {
+        margin-bottom: 10px;
+    }
+}
+
+@media (max-width: 576px) {
+    .course-grid, .article-grid {
+        grid-template-columns: 1fr; /* Stack cards on very small screens */
+    }
+    .hero-content h1 {
+        font-size: 1.8em;
+    }
+    .hero-content p {
+        font-size: 1em;
+    }
+    .btn-hero {
+        padding: 10px 20px;
+        font-size: 0.9em;
+    }
+    .card-image-wrapper {
+        height: 160px;
+    }
+    .course-title-on-image, .article-title-on-image {
+        font-size: 1.1em;
+    }
+}
 
 .arrow {
     height: 10px; /* Chiều cao của mũi tên */

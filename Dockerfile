@@ -1,19 +1,16 @@
-FROM maven:3.9.9-amazoncorretto-8-al2023 AS build
-
+FROM maven:3-openjdk-17 AS build
 WORKDIR /app
 
-COPY pom.xml .
-COPY src ./src
-
+COPY . .
 RUN mvn clean package -DskipTests
 
-# Use OpenJDK to run the application
-FROM openjdk:17-slim-bullseye
 
+# Run stage
+
+FROM openjdk:17-jdk-slim
 WORKDIR /app
 
-COPY --from=build /app/target/spring-boot-starter-parent-0.0.1-SNAPSHOT.jar app.jar
-
+COPY --from=build /app/target/DrComputer-0.0.1-SNAPSHOT.war drcomputer.war
 EXPOSE 8087
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java","-jar","drcomputer.war"]

@@ -18,7 +18,6 @@ public class EventDto {
     private String dateEvent;
     private String ownerName;
     private Integer userId;
-
     private int statusCode;
     private String message;
 }

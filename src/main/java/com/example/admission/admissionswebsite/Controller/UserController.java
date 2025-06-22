@@ -127,13 +127,22 @@ public class UserController {
         model.addAttribute("adminPost", adminPost);
         return "/user/postdetail";
     }
-    @GetMapping("/user/course")
+    @GetMapping("/danh-sach-khoa-hoc")
     public String course() {
-        return "user/course";
+        return "course/course";
     }
-    @GetMapping("/user/course/detail")
+    @GetMapping("/dang-ki-khoa-hoc")
     public String courseDetail() {
         return "course/detail";
+    }
+    @GetMapping("/bat-dau-hoc-khoa-hoc-Kubernetes")
+    public String startlearning() {
+        return "course/learningstart";
+    }
+
+    @GetMapping("/khoa-hoc-Kubernetes")
+    public String courseOnline() {
+        return "course/learningcourse";
     }
 
     @GetMapping("/user/course/java")

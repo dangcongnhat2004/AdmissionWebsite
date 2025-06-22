@@ -16,7 +16,6 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AdminPostDto {
     private int id; // ID của trường đại học
-
     private String title;
     private int statusCode;
     private String message;

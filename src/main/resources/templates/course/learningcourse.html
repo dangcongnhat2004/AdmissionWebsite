@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{user/layout}">
+
+<main layout:fragment="content">
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Khóa học Kubernetes thực tế</title>
+        <style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+                margin: 0;
+                background-color: #fff;
+                color: #333;
+                font-size: 16px;
+            }
+            .container {
+                display: flex;
+                gap: 30px; /* Space between columns */
+                max-width: 1140px; /* Max width of the content area */
+                margin: 30px auto; /* Centering the container */
+                padding: 0 15px; /* Padding on the sides */
+            }
+            .left-column {
+                flex: 7; /* Left column takes more space */
+            }
+            .right-column {
+                flex: 3; /* Right column takes less space */
+            }
+
+            /* --- General Section Title --- */
+            .section-main-title { /* For "Bạn Sẽ Học Được Những Gì?", "Nội dung khóa học" */
+                font-size: 22px;
+                font-weight: 600;
+                margin-bottom: 20px;
+                margin-top: 40px; /* Space above new sections */
+                color: #1c1d1f;
+            }
+            .show-more-button {
+                display: inline-flex; /* Changed from flex to inline-flex */
+                align-items: center;
+                font-size: 0.9em;
+                color: #555;
+                cursor: pointer;
+                margin-bottom: 25px; /* Space below "Hiển thị thêm" and above "Bạn Sẽ Học..." */
+                margin-top: 30px; /* Space above "Hiển thị thêm" */
+            }
+            .show-more-button i {
+                margin-right: 6px;
+                font-size: 1.1em;
+            }
+            .show-more-button:hover {
+                color: #e74c3c;
+            }
+
+
+            /* --- Left Column Styles --- */
+            .rating {
+                margin-bottom: 8px;
+                display: flex;
+                align-items: center;
+                font-size: 0.9em;
+                color: #555;
+            }
+            .rating .stars {
+                color: #f5a623; /* Gold color for stars */
+                margin-right: 8px;
+                font-size: 1.1em;
+            }
+            .course-main-title {
+                font-size: 28px;
+                font-weight: 700;
+                margin-bottom: 8px;
+                color: #1c1d1f;
+            }
+            .category {
+                font-size: 0.9em;
+                color: #555;
+                margin-bottom: 20px;
+            }
+
+            .video-placeholder {
+                background-color: #29303B;
+                color: white;
+                height: 450px;
+                border-radius: 8px;
+                position: relative;
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+                background-image: radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px),
+                radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px);
+                background-size: 30px 30px, 30px 30px;
+                background-position: 0 0, 15px 15px;
+            }
+            .video-top-bar {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 15px 20px;
+                background-color: rgba(0,0,0,0.15);
+                font-size: 0.85em;
+                z-index: 10;
+            }
+            .video-top-bar .title-section {
+                display: flex;
+                align-items: center;
+                color: #e0e0e0;
+            }
+            .video-top-bar .logo {
+                width: 24px;
+                height: 24px;
+                background-color: #FF4500;
+                border-radius: 50%;
+                margin-right: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .video-top-bar .logo-inner {
+                width: 8px;
+                height: 8px;
+                border: 2px solid white;
+                border-radius: 50%;
+            }
+            .video-top-bar .actions a {
+                color: #e0e0e0;
+                text-decoration: none;
+                margin-left: 20px;
+            }
+            .video-top-bar .actions a:hover { text-decoration: underline; }
+            .video-top-bar .actions i { margin-right: 4px; }
+            .video-content-area {
+                margin: auto;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                position: relative;
+                padding: 20px;
+            }
+            .video-placeholder .main-video-title {
+                font-size: 48px;
+                font-weight: 700;
+                margin-bottom: 5px;
+                line-height: 1.2;
+            }
+            .video-placeholder .sub-video-title {
+                font-size: 24px;
+                font-weight: 400;
+                margin-bottom: 30px;
+            }
+            .play-button {
+                width: 80px;
+                height: 80px;
+                background-color: #FF0000;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                box-shadow: 0 4px 15px rgba(255,0,0,0.4);
+            }
+            .play-button::before {
+                content: '';
+                display: block;
+                width: 0;
+                height: 0;
+                border-top: 18px solid transparent;
+                border-bottom: 18px solid transparent;
+                border-left: 30px solid white;
+                margin-left: 5px;
+            }
+            .tabs {
+                display: flex;
+                border-bottom: 1px solid #e0e0e0;
+                margin-top: 30px;
+                margin-bottom: 25px;
+            }
+            .tabs div {
+                padding: 12px 0px;
+                margin-right: 25px;
+                cursor: pointer;
+                font-size: 1em;
+                color: #555;
+                position: relative;
+            }
+            .tabs .active {
+                color: #e74c3c;
+                font-weight: 600;
+            }
+            .tabs .active::after {
+                content: '';
+                position: absolute;
+                bottom: -1px;
+                left: 0;
+                width: 100%;
+                height: 2px;
+                background-color: #e74c3c;
+            }
+            .course-description .section-title { /* "Giới thiệu về khóa học" */
+                font-size: 22px;
+                font-weight: 600;
+                margin-bottom: 15px;
+                color: #1c1d1f;
+            }
+            .description-content p {
+                line-height: 1.7;
+                color: #333;
+                margin-bottom: 1em;
+            }
+
+            /* What you will learn section */
+            .what-you-will-learn ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive columns */
+                gap: 10px 20px; /* Row and column gap */
+            }
+            .what-you-will-learn li {
+                padding-left: 20px;
+                position: relative;
+                line-height: 1.6;
+                font-size: 0.95em;
+                color: #333;
+            }
+            .what-you-will-learn li::before {
+                content: "✓"; /* Checkmark */
+                position: absolute;
+                left: 0;
+                color: #e74c3c; /* Red checkmark */
+                font-weight: bold;
+            }
+
+            /* Course Content Accordion */
+            .course-content-accordion .module {
+                border: 1px solid #e8e9eb;
+                border-radius: 5px;
+                margin-bottom: 10px;
+                background-color: #f7f8fa; /* Light grey background for modules */
+            }
+            .course-content-accordion .module-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 15px 20px;
+                cursor: pointer;
+                font-weight: 500;
+                color: #1c1d1f;
+                border-radius: 5px 5px 0 0; /* Rounded top corners */
+            }
+            .course-content-accordion .module-header.active {
+                background-color: #f0f2f5; /* Slightly different bg for active header */
+                color: #e74c3c; /* Red text for active module title */
+            }
+            .course-content-accordion .module-header:hover {
+                background-color: #f0f2f5;
+            }
+            .course-content-accordion .module-title {
+                font-size: 1em;
+            }
+            .course-content-accordion .toggle-icon {
+                font-size: 1.2em;
+                color: #555;
+            }
+            .course-content-accordion .module-header.active .toggle-icon {
+                color: #e74c3c;
+            }
+            .course-content-accordion .module-lessons {
+                padding: 0px 20px 15px 20px; /* No top padding, use header's bottom padding */
+                background-color: #fff; /* White background for lessons list */
+                border-top: 1px solid #e8e9eb;
+                border-radius: 0 0 5px 5px; /* Rounded bottom corners */
+                display: none; /* Hidden by default */
+            }
+            .course-content-accordion .module-header.active + .module-lessons {
+                display: block; /* Show lessons when header is active */
+            }
+            .course-content-accordion .lesson-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 12px 0;
+                font-size: 0.9em;
+                color: #333;
+                border-bottom: 1px solid #f0f0f0;
+            }
+            .course-content-accordion .lesson-item:last-child {
+                border-bottom: none;
+            }
+            .course-content-accordion .lesson-info {
+                display: flex;
+                align-items: center;
+            }
+            .course-content-accordion .lesson-icon {
+                margin-right: 10px;
+                font-size: 1em;
+                color: #555;
+                width: 18px; /* Ensure icons align nicely */
+                text-align: center;
+            }
+            .course-content-accordion .lesson-meta {
+                display: flex;
+                align-items: center;
+                font-size: 0.85em;
+                color: #555;
+            }
+            .course-content-accordion .lesson-duration {
+                margin-right: 15px;
+            }
+            .course-content-accordion .lesson-view-icon i {
+                font-size: 1.1em;
+            }
+
+
+            /* --- Right Column Styles --- */
+            .right-column-sticky-content {
+                position: sticky;
+                top: 20px;
+            }
+            .save-share-actions {
+                display: flex;
+                justify-content: flex-end;
+                gap: 20px;
+                margin-bottom: 20px;
+                font-size: 0.9em;
+            }
+            .save-share-actions a {
+                text-decoration: none;
+                color: #555;
+                display: flex;
+                align-items: center;
+            }
+            .save-share-actions a:hover { color: #e74c3c; }
+            .save-share-actions i { margin-right: 6px; font-size: 1.1em; }
+
+            .course-progress-box {
+                background-color: #f7f8fa;
+                padding: 25px;
+                border-radius: 8px;
+                border: 1px solid #e8e9eb;
+            }
+            .course-progress-box .progress-title {
+                font-size: 1.2em;
+                font-weight: 600;
+                margin-bottom: 15px;
+                color: #1c1d1f;
+            }
+            .progress-bar-info {
+                display: flex;
+                justify-content: space-between;
+                font-size: 0.85em;
+                color: #555;
+                margin-bottom: 5px;
+            }
+            .progress-bar-container {
+                width: 100%;
+                background-color: #e0e0e0;
+                border-radius: 4px;
+                height: 8px;
+                margin-bottom: 20px;
+                overflow: hidden;
+            }
+            .progress-bar-fill {
+                width: 0%;
+                height: 100%;
+                background-color: #e74c3c;
+                border-radius: 4px;
+                transition: width 0.5s ease-in-out;
+            }
+            .btn-start-learning {
+                background-color: #e74c3c;
+                color: white;
+                border: none;
+                padding: 14px;
+                width: 100%;
+                font-size: 1em;
+                font-weight: 600;
+                border-radius: 5px;
+                cursor: pointer;
+                margin-bottom: 20px;
+                text-align: center;
+                display: block;
+                text-decoration: none;
+            }
+            .btn-start-learning:hover { background-color: #c0392b; }
+            .info-message-box {
+                border: 1px solid #f5c6cb;
+                background-color: #fef3f3;
+                color: #721c24;
+                padding: 12px 15px;
+                border-radius: 5px;
+                font-size: 0.85em;
+                margin-bottom: 15px;
+                display: flex;
+                align-items: flex-start;
+            }
+            .info-message-box .icon-warning {
+                color: #e74c3c;
+                margin-right: 10px;
+                font-size: 1.2em;
+                line-height: 1.3;
+            }
+            .info-message-box p { margin: 0; line-height: 1.4; }
+            .enrollment-info {
+                font-size: 0.85em;
+                color: #555;
+                display: flex;
+                align-items: center;
+                margin-bottom: 25px;
+            }
+            .enrollment-info .icon-cart {
+                color: #28a745;
+                margin-right: 8px;
+                font-size: 1.2em;
+            }
+            .enrollment-info .highlight-date {
+                color: #28a745;
+                font-weight: bold;
+            }
+            .course-info-list {
+                list-style: none;
+                padding: 0;
+                margin: 0 0 25px 0;
+            }
+            .course-info-list li {
+                margin-bottom: 12px;
+                display: flex;
+                align-items: center;
+                color: #333;
+                font-size: 0.95em;
+            }
+            .course-info-list li i {
+                margin-right: 12px;
+                color: #555;
+                width: 20px;
+                text-align: center;
+                font-size: 1.2em;
+            }
+            .instructor-section, .resources-section, .target-audience-section { /* Added target-audience-section */
+                margin-top: 25px;
+                padding-top: 25px;
+                border-top: 1px solid #e8e9eb;
+            }
+            .section-sub-title {
+                font-size: 1.1em;
+                font-weight: 600;
+                margin-bottom: 15px;
+                color: #1c1d1f;
+            }
+            .instructor-info {
+                display: flex;
+                align-items: center;
+            }
+            .instructor-avatar {
+                width: 48px;
+                height: 48px;
+                background-color: #f0f0f0;
+                border-radius: 50%;
+                margin-right: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: bold;
+                overflow: hidden;
+            }
+            .instructor-avatar-content {
+                display: flex;
+                align-items: center;
+            }
+            .avatar-e-char {
+                background-color: #e74c3c;
+                color: white;
+                padding: 4px 7px;
+                border-radius: 3px;
+                margin-right: 1.5px;
+                font-size: 0.9em;
+                line-height: 1;
+            }
+            .avatar-bar-container {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                height: 18px;
+            }
+            .avatar-bar {
+                width: 1.5px;
+                height: 4.5px;
+                background-color: #aaaaaa;
+            }
+            .avatar-bar:not(:last-child) { margin-bottom: 1.5px; }
+            .instructor-details p { margin: 0; line-height: 1.4; }
+            .instructor-details .name { font-weight: 600; color: #1c1d1f; }
+            .instructor-details .title { font-size: 0.85em; color: #555; }
+            .resources-list, .target-audience-list { /* Added target-audience-list */
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+            .resources-list li, .target-audience-list li {
+                margin-bottom: 8px;
+                font-size: 0.95em;
+                color: #333;
+                line-height: 1.5;
+            }
+            .resources-list li a {
+                color: #007bff;
+                text-decoration: none;
+                word-break: break-all;
+            }
+            .resources-list li a:hover { text-decoration: underline; }
+            .target-audience-list li { /* Specific styling for target audience bullet points */
+                padding-left: 18px;
+                position: relative;
+            }
+            .target-audience-list li::before {
+                content: "•"; /* Standard bullet */
+                position: absolute;
+                left: 0;
+                color: #555;
+                font-size: 1.2em;
+                line-height: 1; /* Adjust vertical alignment */
+            }
+
+
+            /* Placeholder Icons */
+            .icon-bookmark::before { content: "🔖"; }
+            .icon-share::before { content: "🔗"; }
+            .icon-level::before { content: "📶"; }
+            .icon-students::before { content: "🎓"; }
+            .icon-update::before { content: "🔄"; }
+            .icon-certificate::before { content: "📜"; }
+            .icon-time::before { content: "🕒"; }
+            .icon-share-video::before { content: "↪️"; }
+            .icon-warning::before { content: "⚠️"; }
+            .icon-cart::before { content: "🛒"; }
+            .icon-plus-circle::before { content: "⊕"; } /* For Hiển thị thêm */
+            .icon-play::before { content: "▶"; }
+            .icon-quiz::before { content: "❓"; }
+            .icon-eye::before { content: "👁️"; }
+            .icon-arrow-up::before { content: "🔼"; }
+            .icon-arrow-down::before { content: "🔽"; }
+            .icon-arrow-right::before { content: "▶"; } /* Using play for right arrow for simplicity */
+
+        </style>
+        <!--
+          To use Font Awesome (recommended for icons):
+          1. Add this to your <head>:
+             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+          2. Replace text icons (like <i class="icon-bookmark"></i>) with Font Awesome classes:
+             e.g., <i class="fas fa-bookmark"></i>, <i class="fas fa-play"></i>, <i class="fas fa-chevron-up"></i> etc.
+        -->
+    </head>
+    <body>
+
+    <div class="container">
+        <div class="left-column">
+            <div class="rating">
+                <span class="stars">★★★★★</span>
+                <span>5.00 (894 Đánh giá)</span>
+            </div>
+            <h1 class="course-main-title">Khóa học Kubernetes thực tế</h1>
+            <div class="category">Danh mục: devops</div>
+
+            <div class="video-placeholder">
+                <div class="video-top-bar">
+                    <div class="title-section">
+                        <div class="logo"><div class="logo-inner"></div></div>
+                        <span>Bài 0. Lộ trình Kubernetes và lưu ý để làm Kubernetes hiệu quả | Khoá học Ku...</span>
+                    </div>
+                    <div class="actions">
+                        <a href="#"><i class="icon-time"></i> Xem sau</a>
+                        <a href="#"><i class="icon-share-video"></i> Chia sẻ</a>
+                    </div>
+                </div>
+                <div class="video-content-area">
+                    <div class="main-video-title">Kubernetes thực tế</div>
+                    <div class="sub-video-title">{chi tiết và đúc kết}</div>
+                    <div class="play-button"></div>
+                </div>
+            </div>
+
+            <div class="tabs">
+                <div class="active">Giới thiệu</div>
+                <div>Đánh giá</div>
+            </div>
+
+            <div class="course-description">
+                <h2 class="section-title">Giới thiệu về khóa học</h2>
+                <div class="description-content">
+                    <p>
+                        Khóa Học Kubernetes Miễn Phí Thực Tế – Xây Dựng Nền Tảng DevOps Vững Chắc,
+                    </p>
+                </div>
+            </div>
+
+            <!-- "Hiển thị thêm" Button -->
+            <div class="show-more-button">
+                <i class="icon-plus-circle"></i> <span>Hiển thị thêm</span>
+            </div>
+
+            <!-- What You Will Learn Section -->
+            <div class="what-you-will-learn">
+                <h3 class="section-main-title">Bạn Sẽ Học Được Những Gì?</h3>
+                <ul>
+                    <li>Chứng chỉ xác nhận đã có kiến thức thực tế về Kubernetes.</li>
+                    <li>Phương pháp triển khai và vận hành dự án thực tế trên Kubernetes.</li>
+                    <li>Cách cài đặt các công cụ database, cache,... trên Kubernetes.</li>
+                    <li>Cách khởi tạo và triển khai dự án Kubernetes trên Cloud.</li>
+                    <li>Cách giám sát và quản trị hệ thống Kubernetes.</li>
+                </ul>
+            </div>
+
+            <!-- Course Content Accordion Section -->
+            <div class="course-content-accordion">
+                <h3 class="section-main-title">Nội dung khóa học</h3>
+
+                <!-- Module 1 (Expanded by default) -->
+                <div class="module">
+                    <div class="module-header active" onclick="toggleAccordion(this)">
+                        <span class="module-title">Lộ trình Kubernetes</span>
+                        <span class="toggle-icon"><i class="icon-arrow-up"></i></span>
+                    </div>
+                    <div class="module-lessons" style="display: block;">
+                        <div class="lesson-item">
+                            <div class="lesson-info">
+                                <span class="lesson-icon"><i class="icon-play"></i></span>
+                                <span>Bài 0. Lộ trình Kubernetes và lưu ý quan trọng</span>
+                            </div>
+                            <div class="lesson-meta">
+                                <span class="lesson-duration">12:22</span>
+                                <span class="lesson-view-icon"><i class="icon-eye"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Module 2 -->
+                <div class="module">
+                    <div class="module-header" onclick="toggleAccordion(this)">
+                        <span class="module-title">Mở đầu với Kubernetes</span>
+                        <span class="toggle-icon"><i class="icon-arrow-right"></i></span>
+                    </div>
+                    <div class="module-lessons">
+                        <div class="lesson-item">
+                            <div class="lesson-info"><span class="lesson-icon"><i class="icon-play"></i></span><span>Bài 1. Kubernetes là gì? Kubernetes để làm gì?</span></div>
+                            <div class="lesson-meta"><span class="lesson-duration">05:25</span><span class="lesson-view-icon"><i class="icon-eye"></i></span></div>
+                        </div>
+                        <div class="lesson-item">
+                            <div class="lesson-info"><span class="lesson-icon"><i class="icon-quiz"></i></span><span>Bài kiểm tra số 1</span></div>
+                            <div class="lesson-meta"><span class="lesson-view-icon"><i class="icon-eye"></i></span></div>
+                        </div>
+                        <!-- ... more lessons for Module 2 ... -->
+                    </div>
+                </div>
+
+                <!-- Module 3 -->
+                <div class="module">
+                    <div class="module-header" onclick="toggleAccordion(this)">
+                        <span class="module-title">Cài đặt cụm Kubernetes</span>
+                        <span class="toggle-icon"><i class="icon-arrow-right"></i></span>
+                    </div>
+                    <div class="module-lessons">
+                        <!-- ... lessons for Module 3 ... -->
+                        <div class="lesson-item">
+                            <div class="lesson-info"><span class="lesson-icon"><i class="icon-play"></i></span><span>Bài 4. Những phương pháp cài đặt cụm Kubernetes</span></div>
+                            <div class="lesson-meta"><span class="lesson-duration">03:37</span><span class="lesson-view-icon"><i class="icon-eye"></i></span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Module 4 -->
+                <div class="module">
+                    <div class="module-header" onclick="toggleAccordion(this)">
+                        <span class="module-title">Triển khai dự án trên Kubernetes</span>
+                        <span class="toggle-icon"><i class="icon-arrow-right"></i></span>
+                    </div>
+                    <div class="module-lessons">
+                        <!-- ... lessons for Module 4 ... -->
+                    </div>
+                </div>
+
+                <!-- Module 5 -->
+                <div class="module">
+                    <div class="module-header" onclick="toggleAccordion(this)">
+                        <span class="module-title">Triển khai công cụ trên kubernetes</span>
+                        <span class="toggle-icon"><i class="icon-arrow-right"></i></span>
+                    </div>
+                    <div class="module-lessons">
+                        <!-- ... lessons for Module 5 ... -->
+                    </div>
+                </div>
+
+                <!-- Module 6 -->
+                <div class="module">
+                    <div class="module-header" onclick="toggleAccordion(this)">
+                        <span class="module-title">Giám sát và quản trị cụm kubernetes</span>
+                        <span class="toggle-icon"><i class="icon-arrow-right"></i></span>
+                    </div>
+                    <div class="module-lessons">
+                        <!-- ... lessons for Module 6 ... -->
+                    </div>
+                </div>
+
+                <!-- Module 7 -->
+                <div class="module">
+                    <div class="module-header" onclick="toggleAccordion(this)">
+                        <span class="module-title">Kubernetes thực tế doanh nghiệp</span>
+                        <span class="toggle-icon"><i class="icon-arrow-right"></i></span>
+                    </div>
+                    <div class="module-lessons">
+                        <!-- ... lessons for Module 7 ... -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="right-column">
+            <div class="right-column-sticky-content">
+                <div class="save-share-actions">
+                    <a href="#"><i class="icon-bookmark"></i> <span>Danh sách yêu thích</span></a>
+                    <a href="#"><i class="icon-share"></i> <span>Chia sẻ</span></a>
+                </div>
+
+                <div class="course-progress-box">
+                    <div class="progress-title">Tiến độ khóa học</div>
+                    <div class="progress-bar-info">
+                        <span>0/86</span>
+                        <span>0% Hoàn thành</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" style="width: 0%;"></div>
+                    </div>
+                    <a href="/bat-dau-hoc-khoa-hoc-Kubernetes" class="btn-start-learning">Bắt đầu học</a>
+                    <div class="info-message-box">
+                        <i class="icon-warning"></i>
+                        <p>Hoàn thành tất cả các bài học để đánh dấu khóa học này là hoàn thành</p>
+                    </div>
+                    <div class="enrollment-info">
+                        <i class="icon-cart"></i>
+                        <span>Bạn đã đăng ký khóa học này trên <span class="highlight-date">Tháng 5 31, 2025</span></span>
+                    </div>
+                </div>
+
+                <ul class="course-info-list">
+                    <li><i class="icon-level"></i> <span>Trung cấp</span></li>
+                    <li><i class="icon-students"></i> <span>7610 Tổng số học viên</span></li>
+                    <li><i class="icon-update"></i> <span>Tháng 5 12, 2025 Cập nhật mới nhất</span></li>
+                    <li><i class="icon-certificate"></i> <span>Certificate of completion</span></li>
+                </ul>
+
+                <div class="instructor-section">
+                    <h4 class="section-sub-title">Khóa học bởi</h4>
+                    <div class="instructor-info">
+                        <div class="instructor-avatar">
+                            <div class="instructor-avatar-content">
+                                <span class="avatar-e-char">E</span>
+                                <div class="avatar-bar-container">
+                                    <div class="avatar-bar"></div>
+                                    <div class="avatar-bar"></div>
+                                    <div class="avatar-bar"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="instructor-details">
+                            <p class="name">elroydevops</p>
+                            <p class="title">DevOps Engineer</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="resources-section">
+                    <h4 class="section-sub-title">Các tài liệu khóa học</h4>
+                    <ul class="resources-list">
+                        <li>
+                            <span>Nhóm chat trao đổi:</span>
+                            <a href="https://www.fb.com/groups/devopsedu.vn" target="_blank">https://www.fb.com/groups/devopsedu.vn</a>
+                        </li>
+                        <li>
+                            <span>Fanpage hỗ trợ:</span>
+                            <a href="https://www.fb.com/devopsedu.vn" target="_blank">https://www.fb.com/devopsedu.vn</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Target Audience Section -->
+                <div class="target-audience-section">
+                    <h4 class="section-sub-title">Đối tượng</h4>
+                    <ul class="target-audience-list">
+                        <li>Bạn đang là DevOps Engineer muốn biết Kubernetes để gia tăng giá trị làm các "bài toán lớn"?</li>
+                        <li>Bạn là Developer hay Operator muốn biết Kubernetes để chuyển hướng làm DevOps hoặc là có thêm kỹ năng để nổi bật hơn các ứng viên khác?</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleAccordion(element) {
+            const lessons = element.nextElementSibling;
+            const icon = element.querySelector('.toggle-icon i');
+            const isActive = element.classList.contains('active');
+
+            if (isActive) {
+                element.classList.remove('active');
+                lessons.style.display = 'none';
+                icon.className = 'icon-arrow-right'; // Or your preferred collapsed icon class
+            } else {
+                // Optional: Close other open accordions
+                // document.querySelectorAll('.course-content-accordion .module-header.active').forEach(activeHeader => {
+                //     activeHeader.classList.remove('active');
+                //     activeHeader.nextElementSibling.style.display = 'none';
+                //     activeHeader.querySelector('.toggle-icon i').className = 'icon-arrow-right';
+                // });
+
+                element.classList.add('active');
+                lessons.style.display = 'block';
+                icon.className = 'icon-arrow-up'; // Or your preferred expanded icon class
+            }
+        }
+    </script>
+
+    </body>
+    </html>
+</main>
+</body>
+</html>

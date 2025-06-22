@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{user/layout}">
+
+<main layout:fragment="content">
+    <!DOCTYPE html>
+    <html lang="vi">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Khóa học Kubernetes - Video Player</title>
+        <style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+                margin: 0;
+                background-color: #fff; /* Changed to white as per new screenshot */
+                color: #333; /* Default text color for content below video */
+                display: flex;
+                flex-direction: column;
+                height: 100vh;
+                overflow: hidden;
+            }
+
+            /* --- Player Top Bar --- */
+            .player-top-bar {
+                background-color: #e74c3c;
+                color: white;
+                display: flex;
+                align-items: center;
+                padding: 10px 15px;
+                font-size: 0.9em;
+                height: 50px;
+                box-sizing: border-box;
+                flex-shrink: 0; /* Prevent shrinking */
+            }
+            .player-top-bar .back-button,
+            .player-top-bar .close-button {
+                background: none; border: none; color: white; font-size: 1.4em; cursor: pointer; padding: 5px 10px;
+            }
+            .player-top-bar .course-title-player {
+                font-weight: 500; margin-left: 15px; margin-right: auto;
+            }
+            .player-top-bar .progress-info {
+                margin-right: 20px; font-size: 0.9em;
+            }
+            .player-top-bar .mark-complete-btn {
+                background-color: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.3);
+                color: white; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.85em;
+                display: flex; align-items: center;
+            }
+            .player-top-bar .mark-complete-btn:hover { background-color: rgba(255, 255, 255, 0.25); }
+            .player-top-bar .mark-complete-btn i { margin-right: 6px; }
+            .player-top-bar .close-button { margin-left: 15px; }
+
+            /* --- Player Content Area (Sidebar + Main Content) --- */
+            .player-content-area {
+                display: flex;
+                flex-grow: 1;
+                height: calc(100vh - 50px);
+                overflow: hidden; /* Prevent double scrollbars initially */
+            }
+
+            /* --- Player Sidebar (Course Content) --- */
+            .player-sidebar {
+                width: 320px;
+                background-color: #f7f8fa;
+                color: #333;
+                padding: 15px;
+                box-sizing: border-box;
+                overflow-y: auto;
+                border-right: 1px solid #e0e0e0;
+                flex-shrink: 0;
+            }
+            .player-sidebar .sidebar-title {
+                font-size: 1.1em; font-weight: 600; margin-bottom: 15px; color: #1c1d1f;
+            }
+            .player-sidebar .module { margin-bottom: 5px; border-radius: 4px; }
+            .player-sidebar .module-header {
+                display: flex; justify-content: space-between; align-items: center;
+                padding: 10px 12px; cursor: pointer; font-weight: 500; color: #333;
+                border-radius: 4px; background-color: #f0f2f5; border: 1px solid transparent;
+            }
+            .player-sidebar .module-header.active,
+            .player-sidebar .module-header:hover { background-color: #e9ecef; }
+            .player-sidebar .module-header.active { border: 1px solid #ddd; }
+            .player-sidebar .module-title-sidebar { font-size: 0.95em; }
+            .player-sidebar .module-progress,
+            .player-sidebar .toggle-icon-sidebar { font-size: 0.8em; color: #555; }
+            .player-sidebar .module-header.active .module-title-sidebar { color: #e74c3c; }
+            .player-sidebar .module-lessons-sidebar {
+                padding: 5px 0 5px 12px; background-color: #fff; display: none;
+                border: 1px solid #e0e0e0; border-top: none; border-radius: 0 0 4px 4px;
+            }
+            .player-sidebar .module-header.active + .module-lessons-sidebar { display: block; }
+            .player-sidebar .lesson-item-sidebar {
+                display: flex; justify-content: space-between; align-items: center;
+                padding: 8px 0; font-size: 0.9em; color: #333;
+                border-bottom: 1px solid #f0f0f0; cursor: pointer;
+            }
+            .player-sidebar .lesson-item-sidebar:last-child { border-bottom: none; }
+            .player-sidebar .lesson-item-sidebar.active-lesson { color: #e74c3c; font-weight: 500; }
+            .player-sidebar .lesson-item-sidebar:hover { background-color: #fdf2f2; }
+            .player-sidebar .lesson-info-sidebar { display: flex; align-items: center; }
+            .player-sidebar .lesson-icon-sidebar { margin-right: 8px; font-size: 0.9em; width: 16px; text-align: center; }
+            .player-sidebar .lesson-duration-sidebar { font-size: 0.85em; color: #555; }
+
+            /* --- Player Main Content (Video + Content Below) --- */
+            .player-main-content-wrapper {
+                flex-grow: 1;
+                display: flex;
+                flex-direction: column;
+                overflow-y: auto; /* Allow this part to scroll if content is long */
+                background-color: #fff; /* White background for content below video */
+            }
+
+            /* --- Player Main Video Area --- */
+            .player-main-video {
+                flex-shrink: 0; /* Prevent video area from shrinking */
+                position: relative; /* For watermark and top-right logo */
+                width: 100%;
+                padding-top: 56.25%; /* 16:9 Aspect Ratio */
+                background-color: #2c3e50; /* Dark blue for video area background */
+            }
+            /* YouTube Iframe */
+            #player-yt-iframe { /* Changed ID to avoid conflict if using previous example */
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                border: none;
+            }
+
+            /* Video Placeholder (Title, Play Button) */
+            .video-placeholder-player {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                z-index: 2;
+                transition: opacity 0.3s ease;
+                color: white;
+                /* Helm wheel background for placeholder too */
+                background-image: radial-gradient(circle, rgba(255,255,255,0.02) 1px, transparent 1px),
+                radial-gradient(circle, rgba(255,255,255,0.02) 1px, transparent 1px);
+                background-size: 40px 40px, 40px 40px;
+                background-position: 0 0, 20px 20px;
+            }
+            .video-placeholder-player.hidden { opacity: 0; pointer-events: none; }
+            .video-placeholder-player .main-title-player {
+                font-size: 4vw; font-weight: 700; margin: 0; text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            }
+            .video-placeholder-player .sub-title-player {
+                font-size: 2vw; margin-top: 10px; text-shadow: 0 1px 5px rgba(0,0,0,0.4);
+            }
+            .play-button-overlay-player {
+                width: 70px; height: 70px; background-color: rgba(33, 150, 243, 0.8);
+                border-radius: 50%; margin-top: 20px; display: flex;
+                justify-content: center; align-items: center; transition: transform 0.2s ease;
+            }
+            .video-placeholder-player:hover .play-button-overlay-player { transform: scale(1.1); }
+            .play-button-overlay-player::before {
+                content: ''; border-style: solid; border-width: 14px 0 14px 24px;
+                border-color: transparent transparent transparent white; margin-left: 5px;
+            }
+
+            /* Devopsedu Watermark */
+            .devopsedu-watermark {
+                position: absolute;
+                bottom: 60px; /* Above controls */
+                left: 20px;
+                font-size: 1.8vw; /* Responsive */
+                font-weight: bold;
+                color: rgba(255, 255, 255, 0.2); /* Very transparent */
+                z-index: 1; /* Below controls but above video if needed */
+                pointer-events: none; /* Not clickable */
+            }
+
+            /* Course Logo Top Right */
+            .course-logo-top-right {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                width: 48px; /* Match sidebar logo */
+                height: 48px;
+                background-color: #e74c3c; /* Red */
+                border-radius: 8px; /* Slightly rounded square */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1;
+            }
+            .course-logo-top-right .inner-circle {
+                width: 24px;
+                height: 24px;
+                background-color: white;
+                border-radius: 50%;
+            }
+
+
+            /* Video Controls Bar */
+            .video-controls-bar {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 45px;
+                background-color: rgba(0, 0, 0, 0.7);
+                color: white;
+                display: flex;
+                align-items: center;
+                padding: 0 15px;
+                box-sizing: border-box;
+                z-index: 3;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+            .player-main-video:hover .video-controls-bar,
+            .video-controls-bar.visible { /* Class to keep it visible */
+                opacity: 1;
+            }
+            .video-controls-bar .control-button {
+                background: none; border: none; color: white; font-size: 1.2em;
+                cursor: pointer; padding: 5px; margin-right: 10px;
+            }
+            .video-controls-bar .control-button:hover { color: #e74c3c; }
+            .video-controls-bar .seek-bar-container {
+                flex-grow: 1; height: 5px; background-color: rgba(255,255,255,0.3);
+                border-radius: 3px; margin: 0 10px; cursor: pointer; position: relative;
+            }
+            .video-controls-bar .seek-bar-progress {
+                height: 100%; width: 0%; background-color: #e74c3c; border-radius: 3px;
+            }
+            .video-controls-bar .time-display-player {
+                font-size: 0.85em; margin-left: 10px; min-width: 80px; /* Enough for "00:00 / 00:00" */
+            }
+            .video-controls-bar .volume-controls-player { display: flex; align-items: center; }
+            .video-controls-bar .volume-slider-player {
+                width: 60px; height: 4px; background-color: rgba(255,255,255,0.3);
+                border-radius: 2px; margin-left: 5px; cursor: pointer;
+                -webkit-appearance: none; appearance: none; /* For styling range input */
+            }
+            .video-controls-bar .volume-slider-player::-webkit-slider-thumb {
+                -webkit-appearance: none; appearance: none;
+                width: 10px; height: 10px; background: white; border-radius: 50%; cursor: pointer;
+            }
+            .video-controls-bar .right-controls-player {
+                margin-left: auto; display: flex; align-items: center;
+            }
+            .video-controls-bar .right-controls-player .control-button { margin-left: 10px; margin-right: 0; }
+
+
+            /* Content Below Video */
+            .player-main-content-below-video {
+                padding: 25px;
+                color: #333; /* Standard text color */
+            }
+            .content-section {
+                margin-bottom: 30px;
+            }
+            .content-section h3 {
+                font-size: 1.3em;
+                font-weight: 600;
+                color: #1c1d1f;
+                margin-bottom: 15px;
+                border-bottom: 1px solid #e0e0e0;
+                padding-bottom: 10px;
+            }
+            .content-section ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                line-height: 1.8;
+                font-size: 0.95em;
+            }
+            .content-section li {
+                margin-bottom: 5px;
+            }
+            .content-section a {
+                color: #e74c3c; /* Red links */
+                text-decoration: none;
+                font-weight: 500;
+            }
+            .content-section a:hover {
+                text-decoration: underline;
+            }
+
+            /* Navigation Buttons Below Content */
+            .player-navigation-buttons {
+                display: flex;
+                justify-content: space-between;
+                padding: 15px 25px;
+                border-top: 1px solid #e8e9eb;
+                background-color: #f7f8fa; /* Light grey background */
+            }
+            .player-navigation-buttons .nav-btn {
+                background-color: #fff;
+                border: 1px solid #ccc;
+                color: #555;
+                padding: 8px 15px;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 0.9em;
+                display: flex;
+                align-items: center;
+            }
+            .player-navigation-buttons .nav-btn:hover {
+                background-color: #f0f0f0;
+            }
+            .player-navigation-buttons .nav-btn .icon-nav-arrow {
+                margin: 0 5px;
+            }
+
+
+            /* Placeholder Icons */
+            .icon-back::before { content: "‹"; font-size: 1.5em; line-height: 1; }
+            .icon-check-circle::before { content: "✓"; }
+            .icon-close::before { content: "×"; font-size: 1.5em; line-height: 1; }
+            .icon-play-sidebar::before { content: "▶"; font-size: 0.8em; }
+            .icon-quiz-sidebar::before { content: "❓"; font-size: 0.8em;}
+            .icon-arrow-up-sidebar::before { content: "🔼"; }
+            .icon-arrow-down-sidebar::before { content: "🔽"; }
+            .icon-play-main::before { content: "▶"; font-size: 1.2em;}
+            .icon-pause-main::before { content: "❚❚"; font-size: 1.2em;}
+            .icon-volume-high::before { content: "🔊"; }
+            .icon-volume-mute::before { content: "🔇"; }
+            .icon-settings::before { content: "⚙️"; }
+            .icon-pip::before { content: "❏"; }
+            .icon-fullscreen::before { content: "⛶"; }
+            .icon-nav-arrow-left::before { content: "←"; }
+            .icon-nav-arrow-right::before { content: "→"; }
+
+        </style>
+    </head>
+    <body>
+
+    <div class="player-top-bar">
+        <button class="back-button"><i class="icon-back"></i></button>
+        <span class="course-title-player">Khóa học Kubernetes thực tế</span>
+        <span class="progress-info">Tiến trình của bạn: 0 trên 86 (0%)</span>
+        <button class="mark-complete-btn"><i class="icon-check-circle"></i> Đánh dấu là hoàn thành</button>
+        <button class="close-button"><i class="icon-close"></i></button>
+    </div>
+
+    <div class="player-content-area">
+        <div class="player-sidebar">
+            <div class="sidebar-title">Nội dung khóa học</div>
+            <!-- Module 1 (Expanded by default, active lesson) -->
+            <div class="module">
+                <div class="module-header active" onclick="togglePlayerAccordion(this)">
+                    <span class="module-title-sidebar">Lộ trình Kubernetes</span>
+                    <span class="module-progress">0/1</span>
+                    <span class="toggle-icon-sidebar"><i class="icon-arrow-up-sidebar"></i></span>
+                </div>
+                <div class="module-lessons-sidebar" style="display: block;">
+                    <div class="lesson-item-sidebar active-lesson" data-video-id="rtMKUS21bII">
+                        <div class="lesson-info-sidebar">
+                            <span class="lesson-icon-sidebar"><i class="icon-play-sidebar"></i></span>
+                            <span>Bài 0. Lộ trình Kubernetes và lưu ý quan trọng</span>
+                        </div>
+                        <span class="lesson-duration-sidebar">12:22</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Other modules -->
+            <div class="module">
+                <div class="module-header" onclick="togglePlayerAccordion(this)">
+                    <span class="module-title-sidebar">Mở đầu với Kubernetes</span>
+                    <span class="module-progress">0/6</span>
+                    <span class="toggle-icon-sidebar"><i class="icon-arrow-down-sidebar"></i></span>
+                </div>
+                <div class="module-lessons-sidebar">
+                    <div class="lesson-item-sidebar" data-video-id="someOtherVideoId1"> <!-- Add actual video IDs -->
+                        <div class="lesson-info-sidebar"><span class="lesson-icon-sidebar"><i class="icon-play-sidebar"></i></span><span>Bài 1. Kubernetes là gì?</span></div>
+                        <span class="lesson-duration-sidebar">05:25</span>
+                    </div>
+                </div>
+            </div>
+            <!-- ... Add all other modules and lessons from your image ... -->
+            <div class="module">
+                <div class="module-header" onclick="togglePlayerAccordion(this)">
+                    <span class="module-title-sidebar">Cài đặt cụm Kubernetes</span>
+                    <span class="module-progress">0/6</span> <span class="toggle-icon-sidebar"><i class="icon-arrow-down-sidebar"></i></span>
+                </div> <div class="module-lessons-sidebar"></div>
+            </div>
+            <div class="module">
+                <div class="module-header" onclick="togglePlayerAccordion(this)">
+                    <span class="module-title-sidebar">Triển khai dự án trên Kubernetes</span>
+                    <span class="module-progress">0/50</span> <span class="toggle-icon-sidebar"><i class="icon-arrow-down-sidebar"></i></span>
+                </div> <div class="module-lessons-sidebar"></div>
+            </div>
+            <div class="module">
+                <div class="module-header" onclick="togglePlayerAccordion(this)">
+                    <span class="module-title-sidebar">Triển khai công cụ trên kubernetes</span>
+                    <span class="module-progress">0/9</span> <span class="toggle-icon-sidebar"><i class="icon-arrow-down-sidebar"></i></span>
+                </div> <div class="module-lessons-sidebar"></div>
+            </div>
+            <div class="module">
+                <div class="module-header" onclick="togglePlayerAccordion(this)">
+                    <span class="module-title-sidebar">Giám sát và quản trị cụm kubernetes</span>
+                    <span class="module-progress">0/13</span> <span class="toggle-icon-sidebar"><i class="icon-arrow-down-sidebar"></i></span>
+                </div> <div class="module-lessons-sidebar"></div>
+            </div>
+            <div class="module">
+                <div class="module-header" onclick="togglePlayerAccordion(this)">
+                    <span class="module-title-sidebar">Kubernetes thực tế doanh nghiệp</span>
+                    <span class="module-progress">0/1</span> <span class="toggle-icon-sidebar"><i class="icon-arrow-down-sidebar"></i></span>
+                </div> <div class="module-lessons-sidebar"></div>
+            </div>
+        </div>
+
+        <div class="player-main-content-wrapper">
+            <div class="player-main-video" id="videoContainerPlayer">
+                <div class="video-placeholder-player" id="videoPlaceholderPlayer">
+                    <h1 class="main-title-player">Khóa học Kubernetes thực tế</h1>
+                    <p class="sub-title-player">{cơ bản đến thực tế}</p>
+                    <div class="play-button-overlay-player"></div>
+                </div>
+                <div id="player-yt-iframe"></div> <!-- YouTube IFrame will be injected here -->
+                <div class="devopsedu-watermark">devopsedu.vn</div>
+                <div class="course-logo-top-right"><div class="inner-circle"></div></div>
+                <div class="video-controls-bar" id="customControlsPlayer">
+                    <button class="control-button" id="playPauseBtnPlayer"><i class="icon-play-main"></i></button>
+                    <div class="seek-bar-container">
+                        <input type="range" class="seek-bar-progress" id="seekBarPlayer" value="0" min="0" style="width:100%; height:100%; margin:0; padding:0; background:transparent; -webkit-appearance: none; appearance: none;">
+                        <!-- The actual progress will be a div on top or styled track -->
+                    </div>
+                    <span class="time-display-player" id="timeDisplayPlayer">00:00 / 00:00</span>
+                    <div class="volume-controls-player">
+                        <button class="control-button" id="volumeBtnPlayer"><i class="icon-volume-high"></i></button>
+                        <input type="range" class="volume-slider-player" id="volumeBarPlayer" value="100" min="0" max="100">
+                    </div>
+                    <div class="right-controls-player">
+                        <button class="control-button" id="settingsBtnPlayer"><i class="icon-settings"></i></button>
+                        <button class="control-button" id="pipBtnPlayer"><i class="icon-pip"></i></button>
+                        <button class="control-button" id="fullscreenBtnPlayer"><i class="icon-fullscreen"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="player-main-content-below-video">
+                <div class="content-section">
+                    <h3>Nội dung bài học</h3>
+                    <ul>
+                        <li>00:00 – Mở đầu</li>
+                        <li>00:45 – Tại sao nên học ở devopsedu.vn</li>
+                        <li>01:10 – Làm sao để lấy tối đa giá trị khóa học?</li>
+                        <li>02:15 – Giải đáp thắc mắc</li>
+                        <li>02:34 – Tự tưởng học Kubernetes như thế nào?</li>
+                        <li>03:43 – Khi nào nên học Kubernetes?</li>
+                        <li>04:25 – Tại sao mình sang làm DevOps?</li>
+                        <li>07:22 – Tại sao cần biết Kubernetes?</li>
+                        <li>07:55 – Lộ trình tổng quan</li>
+                        <li>09:09 – Giai đoạn lộ trình đầu tiên</li>
+                        <li>09:40 – Giai đoạn lộ trình thứ hai</li>
+                        <li>01:03 – Giai đoạn lộ trình thứ ba</li>
+                        <li>12:07 – Kết thúc</li>
+                        <!-- Make these clickable to seek video -->
+                    </ul>
+                </div>
+                <div class="content-section">
+                    <h3>LIÊN KẾT KHÁC</h3>
+                    <ul>
+                        <li>Nhận tài liệu DevOps và thông báo ưu tiên: <a href="#">tài liệu</a></li>
+                        <li>Nhóm facebook trao đổi: <a href="#">elroydevopsgroups</a></li>
+                        <li>Fanpage hỗ trợ: <a href="#">DEVOPSSEDU.VN</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="player-navigation-buttons">
+                <button class="nav-btn" id="prevLessonBtn"><span class="icon-nav-arrow icon-nav-arrow-left"></span> Bài trước</button>
+                <button class="nav-btn" id="nextLessonBtn">Bài sau <span class="icon-nav-arrow icon-nav-arrow-right"></span></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var playerYouTube; // Renamed to avoid conflict
+        var currentVideoId = 'rtMKUS21bII'; // Default video for Bài 0
+
+
+        function onYouTubeIframeAPIReady() {
+            playerYouTube = new YT.Player('player-yt-iframe', {
+                height: '100%',
+                width: '100%',
+                videoId: currentVideoId,
+                playerVars: {
+                    'playsinline': 1, 'controls': 0, 'showinfo': 0, 'rel': 0,
+                    'modestbranding': 1, 'disablekb': 1, 'origin': window.location.origin
+                },
+                events: { 'onReady': onPlayerReadyYouTube, 'onStateChange': onPlayerStateChangeYouTube }
+            });
+        }
+
+        if (typeof YT === 'undefined' || typeof YT.Player === 'undefined') {
+            var tag = document.createElement('script');
+            tag.src = "https://www.youtube.com/iframe_api";
+            var firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        } else {
+            onYouTubeIframeAPIReady(); // API already loaded
+        }
+
+
+        const videoPlaceholderPlayer = document.getElementById('videoPlaceholderPlayer');
+        const playPauseBtnPlayer = document.getElementById('playPauseBtnPlayer');
+        const seekBarPlayer = document.getElementById('seekBarPlayer');
+        const timeDisplayPlayer = document.getElementById('timeDisplayPlayer');
+        const volumeBtnPlayer = document.getElementById('volumeBtnPlayer');
+        const volumeBarPlayer = document.getElementById('volumeBarPlayer');
+        const fullscreenBtnPlayer = document.getElementById('fullscreenBtnPlayer');
+        const videoContainerPlayer = document.getElementById('videoContainerPlayer');
+        const customControlsPlayer = document.getElementById('customControlsPlayer'); // Get controls bar
+
+        let isPlayingYouTube = false;
+        let updateTimerYouTube;
+        let controlsTimeout;
+
+
+        function onPlayerReadyYouTube(event) {
+            const duration = playerYouTube.getDuration();
+            seekBarPlayer.max = duration;
+            timeDisplayPlayer.textContent = `00:00 / ${formatTimeYouTube(duration)}`;
+
+            videoPlaceholderPlayer.addEventListener('click', () => {
+                playerYouTube.playVideo();
+                videoPlaceholderPlayer.classList.add('hidden');
+                customControlsPlayer.classList.add('visible'); // Show controls when video starts
+            });
+
+            playPauseBtnPlayer.addEventListener('click', togglePlayPauseYouTube);
+            seekBarPlayer.addEventListener('input', () => {
+                playerYouTube.seekTo(seekBarPlayer.value, true);
+                hideControlsAfterDelay();
+            });
+            volumeBtnPlayer.addEventListener('click', toggleMuteYouTube);
+            volumeBarPlayer.addEventListener('input', (e) => {
+                playerYouTube.setVolume(e.target.value);
+                hideControlsAfterDelay();
+            });
+            fullscreenBtnPlayer.addEventListener('click', toggleFullScreenYouTube);
+
+            // Show/Hide controls on mouse enter/leave video area
+            videoContainerPlayer.addEventListener('mouseenter', () => {
+                clearTimeout(controlsTimeout);
+                customControlsPlayer.classList.add('visible');
+            });
+            videoContainerPlayer.addEventListener('mousemove', () => { // Reset timer on mouse move
+                clearTimeout(controlsTimeout);
+                customControlsPlayer.classList.add('visible');
+                hideControlsAfterDelay();
+            });
+            videoContainerPlayer.addEventListener('mouseleave', () => {
+                if (isPlayingYouTube) { // Only hide if playing
+                    hideControlsAfterDelay(0); // Hide immediately if mouse leaves
+                }
+            });
+        }
+
+        function hideControlsAfterDelay(delay = 2000) {
+            clearTimeout(controlsTimeout);
+            if (isPlayingYouTube) { // Only set timeout if playing
+                controlsTimeout = setTimeout(() => {
+                    customControlsPlayer.classList.remove('visible');
+                }, delay);
+            }
+        }
+
+
+        function onPlayerStateChangeYouTube(event) {
+            if (event.data == YT.PlayerState.PLAYING) {
+                playPauseBtnPlayer.innerHTML = '<i class="icon-pause-main"></i>';
+                isPlayingYouTube = true;
+                updateTimerYouTube = setInterval(updateSeekBarYouTube, 250);
+                videoPlaceholderPlayer.classList.add('hidden');
+                customControlsPlayer.classList.add('visible'); // Show controls when playing
+                hideControlsAfterDelay(); // Start timer to hide controls
+            } else {
+                playPauseBtnPlayer.innerHTML = '<i class="icon-play-main"></i>';
+                isPlayingYouTube = false;
+                clearInterval(updateTimerYouTube);
+                clearTimeout(controlsTimeout); // Clear hide timer
+                customControlsPlayer.classList.add('visible'); // Keep controls visible when paused/ended
+            }
+        }
+
+        function togglePlayPauseYouTube() {
+            if (isPlayingYouTube) playerYouTube.pauseVideo(); else playerYouTube.playVideo();
+            hideControlsAfterDelay();
+        }
+        function updateSeekBarYouTube() {
+            const currentTime = playerYouTube.getCurrentTime();
+            seekBarPlayer.value = currentTime;
+            timeDisplayPlayer.textContent = `${formatTimeYouTube(currentTime)} / ${formatTimeYouTube(playerYouTube.getDuration())}`;
+            // Update seek bar visual progress (if using a separate div overlay for progress)
+            // Example: document.getElementById('actualProgressBar').style.width = (currentTime / playerYouTube.getDuration() * 100) + '%';
+        }
+        function formatTimeYouTube(time) {
+            time = Math.round(time);
+            const minutes = Math.floor(time / 60);
+            const seconds = time - minutes * 60;
+            return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+        function toggleMuteYouTube() {
+            if (playerYouTube.isMuted()) {
+                playerYouTube.unMute();
+                volumeBtnPlayer.innerHTML = '<i class="icon-volume-high"></i>';
+                volumeBarPlayer.value = playerYouTube.getVolume();
+            } else {
+                playerYouTube.mute();
+                volumeBtnPlayer.innerHTML = '<i class="icon-volume-mute"></i>';
+                // volumeBarPlayer.value = 0; // Don't set to 0, just mute
+            }
+            hideControlsAfterDelay();
+        }
+        function toggleFullScreenYouTube() {
+            const iframe = playerYouTube.getIframe();
+            if (!document.fullscreenElement) {
+                if (iframe.requestFullscreen) iframe.requestFullscreen();
+                else if (iframe.mozRequestFullScreen) iframe.mozRequestFullScreen(); /* Firefox */
+                else if (iframe.webkitRequestFullscreen) iframe.webkitRequestFullscreen(); /* Chrome, Safari & Opera */
+                else if (iframe.msRequestFullscreen) iframe.msRequestFullscreen(); /* IE/Edge */
+            } else {
+                if (document.exitFullscreen) document.exitFullscreen();
+            }
+            hideControlsAfterDelay();
+        }
+
+        // Accordion for sidebar
+        function togglePlayerAccordion(element) {
+            const lessons = element.nextElementSibling;
+            const icon = element.querySelector('.toggle-icon-sidebar i');
+            const isActive = element.classList.contains('active');
+            if (isActive) {
+                element.classList.remove('active'); lessons.style.display = 'none'; icon.className = 'icon-arrow-down-sidebar';
+            } else {
+                element.classList.add('active'); lessons.style.display = 'block'; icon.className = 'icon-arrow-up-sidebar';
+            }
+        }
+
+        // Logic for lesson item click
+        document.querySelectorAll('.player-sidebar .lesson-item-sidebar').forEach(item => {
+            item.addEventListener('click', function() {
+                // Remove active class from previously active lesson
+                const currentActive = document.querySelector('.player-sidebar .lesson-item-sidebar.active-lesson');
+                if (currentActive) currentActive.classList.remove('active-lesson');
+                // Add active class to clicked lesson
+                this.classList.add('active-lesson');
+
+                const newVideoId = this.dataset.videoId;
+                if (newVideoId && newVideoId !== currentVideoId) {
+                    currentVideoId = newVideoId;
+                    playerYouTube.loadVideoById(currentVideoId);
+                    videoPlaceholderPlayer.classList.add('hidden'); // Hide placeholder if it was visible
+                } else if (newVideoId) { // If same video, just play if paused
+                    if (playerYouTube.getPlayerState() !== YT.PlayerState.PLAYING) {
+                        playerYouTube.playVideo();
+                    }
+                }
+            });
+        });
+
+    </script>
+    </body>
+    </html>
+</main>
+</body>
+</html>
