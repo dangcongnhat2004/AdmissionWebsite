@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="86345bfe-a464-46b0-9b25-2897160fd093" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+        <option value="AnnotationType" />
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
+  <component name="ProjectId" id="2lb7GbwbQicG9PZUxBtZOeM5Lkh" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "Spring Boot.AdmissionsWebsiteApplication.executor": "Run",
+    "com.codeium.enabled": "true",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/a_project_india/AdmissionsWebsite",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "reference.settings.project.maven.repository.indices",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.example.admission.admissionswebsite.Model" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\a_project_india\spring-boot-webrtc-peer2peer-master\AdmissionsWebsite\src\main\java\com\example\admission\admissionswebsite" />
+      <recent name="D:\a_project_india\spring-boot-webrtc-peer2peer-master\AdmissionsWebsite\src\main\resources\static\Admin\assets\img\kaiadmin" />
+      <recent name="D:\a_project_india\spring-boot-webrtc-peer2peer-master\AdmissionsWebsite\src\main\resources\templates\course" />
+      <recent name="D:\a_project_india\spring-boot-webrtc-peer2peer-master\AdmissionsWebsite\src\main\resources\static\course" />
+      <recent name="D:\a_project_india\spring-boot-webrtc-peer2peer-master\AdmissionsWebsite\src\main\resources\static\user\img" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\a_project_india\spring-boot-webrtc-peer2peer-master\AdmissionsWebsite\src\main\resources\templates\user" />
+      <recent name="D:\a_project_india\spring-boot-webrtc-peer2peer-master\AdmissionsWebsite\src\main\resources\static\user" />
+      <recent name="D:\a_project_india\spring-boot-webrtc-peer2peer-master\AdmissionsWebsite\src\main\resources\static" />
+      <recent name="D:\a_project_india\spring-boot-webrtc-peer2peer-master\AdmissionsWebsite\src\main\java\com\example\admission\admissionswebsite\Controller" />
+      <recent name="D:\a_project_india\spring-boot-webrtc-peer2peer-master\AdmissionsWebsite\src\main\resources\static\Admin" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.example.admission.admissionswebsite.Controller" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="AdmissionsWebsiteApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="AdmissionsWebsite" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.admission.admissionswebsite.AdmissionsWebsiteApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Spring Boot.AdmissionsWebsiteApplication" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-22-openjdk-22-4caba194b151-f504ca98" />
+        <option value="jdk-22-openjdk-22-f644763e9732-8c5c9ae5" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="86345bfe-a464-46b0-9b25-2897160fd093" name="Changes" comment="" />
+      <created>1725436830175</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1725436830175</updated>
+      <workItem from="1725436831371" duration="5113000" />
+      <workItem from="1725524017108" duration="4548000" />
+      <workItem from="1725549368182" duration="13864000" />
+      <workItem from="1725595084569" duration="397000" />
+      <workItem from="1725595625910" duration="962000" />
+      <workItem from="1725598000835" duration="8256000" />
+      <workItem from="1725872716940" duration="195000" />
+      <workItem from="1726407436873" duration="2366000" />
+      <workItem from="1726447746311" duration="10000" />
+      <workItem from="1726713451898" duration="5156000" />
+      <workItem from="1726759445179" duration="182000" />
+      <workItem from="1726759723764" duration="536000" />
+      <workItem from="1727224737166" duration="22277000" />
+      <workItem from="1727577132823" duration="34622000" />
+      <workItem from="1727708456370" duration="52000" />
+      <workItem from="1727769757760" duration="691000" />
+      <workItem from="1727931913247" duration="2029000" />
+      <workItem from="1727935780463" duration="1662000" />
+      <workItem from="1728371019585" duration="2531000" />
+      <workItem from="1728398704917" duration="601000" />
+      <workItem from="1728542350851" duration="3534000" />
+      <workItem from="1728628370327" duration="3126000" />
+      <workItem from="1728701179304" duration="628000" />
+      <workItem from="1729121119177" duration="629000" />
+      <workItem from="1729474135787" duration="22000" />
+      <workItem from="1729733795704" duration="2501000" />
+      <workItem from="1730158370630" duration="4685000" />
+      <workItem from="1730250503242" duration="31000" />
+      <workItem from="1730344489976" duration="10506000" />
+      <workItem from="1730701021321" duration="6131000" />
+      <workItem from="1730765267004" duration="688000" />
+      <workItem from="1730926510228" duration="11030000" />
+      <workItem from="1730942223221" duration="4155000" />
+      <workItem from="1731049494998" duration="36325000" />
+      <workItem from="1731393756622" duration="18963000" />
+      <workItem from="1731503131436" duration="360000" />
+      <workItem from="1731503567276" duration="24000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/example/admission/admissionswebsite/Controller/AdminController.java</url>
+          <line>28</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
