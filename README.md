@@ -13,7 +13,7 @@ This project is an **online admission management system** designed to streamline
 ## 🛠️ Technologies Used
 
 - **Backend:** Java, Spring Boot  
-- **Frontend:** HTML, CSS, JavaScript (optional: Bootstrap, React, etc.)  
+- **Frontend:** HTML, CSS, JavaScript, Thymeleaf 
 - **Database:** MySQL  
 - **Tools:** Maven, Git, IntelliJ IDEA (or Eclipse)
 
@@ -36,7 +36,7 @@ This project is an **online admission management system** designed to streamline
 - Java 17+
 - MySQL Server
 - Maven
-- IDE (IntelliJ, Eclipse, etc.)
+- IDE (IntelliJ, HeidiSQL, etc.)
 
 ### Setup Instructions
 
